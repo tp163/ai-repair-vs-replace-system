@@ -1,0 +1,4 @@
+langgraph>=0.2.0
+streamlit>=1.35.0
+# Optional: free live market search for the Market Research Agent
+duckduckgo-search>=6.0.0
