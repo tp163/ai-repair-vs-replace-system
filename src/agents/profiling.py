@@ -43,22 +43,31 @@ def run(state: AgentState, llm) -> dict:
     residual = (_estimate_residual(brand, year, original_price, condition)
                 if original_price else None)
 
-    # Enrich a manually supplied identity with known catalogue specifications
-    # when a brand/model match exists. Keep user-entered identity authoritative.
+    # Enrich the profile only from a confirmed catalogue row when available.
     known_specs = {}
-    try:
-        matches = [p for p in dataset.load_phones()
-                   if str(p.get("brand", "")).casefold() == str(brand).casefold()
-                   and str(p.get("model", "")).casefold() == str(old.get("model", "")).casefold()]
-        selected_variant = old.get("variant")
-        if selected_variant:
-            variant_matches = [p for p in matches
-                               if str(p.get("variant") or p.get("id", "")).casefold() == str(selected_variant).casefold()]
-            matches = variant_matches or matches
-        if matches:
-            known_specs = matches[0]
-    except (FileNotFoundError, ValueError):
-        pass
+    if old.get("match_status") != "not_found":
+        try:
+            phones = dataset.load_phones()
+            matched_id = old.get("matched_id")
+            if matched_id:
+                known_specs = next(
+                    (phone for i, phone in enumerate(phones)
+                     if str(phone.get("id") or f"row-{i}") == str(matched_id)),
+                    {},
+                )
+            else:
+                matches = [p for p in phones
+                           if str(p.get("brand", "")).casefold() == str(brand).casefold()
+                           and str(p.get("model", "")).casefold() == str(old.get("model", "")).casefold()]
+                selected_variant = old.get("variant")
+                if selected_variant:
+                    variant_matches = [p for p in matches
+                                       if str(p.get("variant") or p.get("id", "")).casefold() == str(selected_variant).casefold()]
+                    matches = variant_matches or matches
+                if matches:
+                    known_specs = matches[0]
+        except (FileNotFoundError, ValueError):
+            pass
 
     profile = {
         "brand": brand,

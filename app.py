@@ -14,6 +14,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import streamlit as st
 from src import config
 from src.dataset import load_phones
+from src.device_match import match_device, build_confirmation, format_specs
 from src.graph import run_pipeline
 from src.ui.components import (
     full_landing,
@@ -210,28 +211,34 @@ def page_diagnose() -> None:
                 catalogue = load_phones()
             except (FileNotFoundError, ValueError):
                 catalogue = []
-            device_matches = [p for p in catalogue
-                              if str(p.get("brand", "")).casefold() == brand.casefold()
-                              and str(p.get("model", "")).casefold() == model.casefold()]
+            match = match_device(brand, model, catalogue)
             selected_device = None
-            profile_confirmed = False
-            if device_matches:
-                devices_by_id = {str(p.get("id", i)): p
-                                 for i, p in enumerate(device_matches)}
-                def variant_label(phone: dict) -> str:
-                    variant = phone.get("variant") or phone.get("id") or "Standard variant"
-                    return f"{variant} · {phone.get('ram_gb', '?')} GB RAM · {phone.get('storage_gb', '?')} GB storage"
+            selected_id = None
+            user_confirmed = False
+            manual_ok = not catalogue
+            if match["options"]:
+                options_by_id = {o["id"]: o for o in match["options"]}
                 selected_id = st.selectbox(
-                    "Matching device variant", list(devices_by_id),
-                    format_func=lambda phone_id: variant_label(devices_by_id[phone_id]),
+                    "Matching device variant", list(options_by_id),
+                    format_func=lambda i: options_by_id[i]["label"],
                     key="d_device_variant",
                 )
-                selected_device = devices_by_id[selected_id]
-                profile_confirmed = st.checkbox(
-                    "I confirm this is my device variant", key="d_profile_confirmed",
+                selected_device = options_by_id[selected_id]["phone"]
+                st.caption(" · ".join(f"{k}: {v}" for k, v in format_specs(selected_device)))
+                user_confirmed = st.checkbox(
+                    "I confirm this is my device variant",
+                    key=f"d_confirm_{selected_id}",
                 )
             elif catalogue:
-                st.caption("No exact catalogue match. You can continue with the device details you entered.")
+                if match["suggestions"]:
+                    st.caption("Did you mean: " + ", ".join(
+                        f"{s['brand']} {s['model']}" for s in match["suggestions"]) + "?")
+                else:
+                    st.caption("No catalogue match.")
+                manual_ok = st.checkbox(
+                    "Continue with the details I entered (unverified)", key="d_manual_ok",
+                )
+            confirmation = build_confirmation(match, selected_id, user_confirmed, manual_ok)
             year       = st.slider("Year purchased", 2015, 2026, 2021, key="d_year")
             orig_price = st.number_input("Original price (LKR)", min_value=0,
                                          value=75_000, step=5_000, key="d_price")
@@ -256,7 +263,7 @@ def page_diagnose() -> None:
             st.markdown("<br>", unsafe_allow_html=True)
             run = st.button("Analyze & Recommend", type="primary",
                             icon=":material/search:", use_container_width=True,
-                            disabled=bool(device_matches and not profile_confirmed))
+                            disabled=not confirmation["confirmed"])
             st.markdown(
                 f'<p style="font-size:0.7rem;color:#3a5a7a;margin-top:0.4rem;text-align:center;">'
                 f'LLM: <strong>{config.LLM_PROVIDER}</strong> · '
@@ -276,7 +283,9 @@ def page_diagnose() -> None:
             "condition":          condition,
             "fault":              fault,
             "variant":            (selected_device or {}).get("variant") or (selected_device or {}).get("id", ""),
-            "profile_confirmed":  bool(device_matches and profile_confirmed),
+            "profile_confirmed":  confirmation["confirmed"],
+            "matched_id":         confirmation["matched_id"],
+            "match_status":       confirmation["match_status"],
         }
 
         if run:
