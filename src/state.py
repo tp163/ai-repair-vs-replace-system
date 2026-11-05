@@ -37,7 +37,7 @@ class DeviceConfirmation(TypedDict, total=False):
 class Diagnosis(TypedDict, total=False):
     """Written by the Fault Diagnosis Agent (Person A, 5.2)."""
     fault_category: str             # one of the fixed fault list
-    confidence: float               # 0.0 - 1.0
+    confidence: Literal["low", "medium", "high"]  # "low" | "medium" | "high"
     method: Literal["llm", "rules", "image", "llm+image"]
     alternatives: list[dict]        # [{"fault_category", "confidence"}]
     image_findings: dict            # {"label", "confidence", "model"} or {}

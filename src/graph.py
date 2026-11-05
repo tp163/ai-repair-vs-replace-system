@@ -89,7 +89,8 @@ def build_graph(llm=None):
 def run_pipeline(old_device: dict, user_needs: str,
                  budget_lkr: float | None = None,
                  issue_description: str = "",
-                 image_data_uri: str | None = None) -> AgentState:
+                 image_data_uri: str | None = None,
+                 device_confirmation: dict | None = None) -> AgentState:
     """Run the full multi-agent replacement pipeline and return final state."""
     graph = build_graph()
     initial: AgentState = {
@@ -98,6 +99,7 @@ def run_pipeline(old_device: dict, user_needs: str,
         "budget_lkr": budget_lkr,
         "issue_description": issue_description or old_device.get("fault", ""),
         "image_data_uri": image_data_uri,
+        "device_confirmation": device_confirmation or {},
         "trace": [],
     }
     return graph.invoke(initial)

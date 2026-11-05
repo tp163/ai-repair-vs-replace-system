@@ -1,0 +1,204 @@
+{
+  "retrieved_at": "2026-10-31",
+  "notes": "Every entry was opened on the retrieved date and its content checked. Add a new entry only after opening the link yourself. Types: support = manufacturer troubleshooting page (safe checks), service = manufacturer repair or booking page, info = background page that is not a how-to, guide = DIY teardown guide (advanced, never shown when a safety stop applies). Brand names are matched case-insensitively; Redmi, Poco and Mi count as Xiaomi.",
+  "entries": [
+    {
+      "id": "apple-charging-support",
+      "brand": "Apple", "model": null, "faults": ["charging"], "type": "support",
+      "title": "If your iPhone or iPod touch won't charge",
+      "url": "https://support.apple.com/en-me/108805",
+      "source": "Apple Support",
+      "requires_opening_device": false, "uses_heat": false, "requires_soldering": false,
+      "note": "Middle East version of the page. Swap for a Sri Lanka version if one exists.",
+      "verified_at": "2026-10-31",
+      "verified_note": "Steps: try another cable and outlet, restart, clear port debris, force restart, then get service. Does not tell the user to open the phone."
+    },
+    {
+      "id": "apple-battery-service",
+      "brand": "Apple", "model": null, "faults": ["battery"], "type": "service",
+      "title": "Apple Service and Repair for iPhone Battery",
+      "url": "https://support.apple.com/en-us/iphone/repair/battery-replacement",
+      "source": "Apple Support",
+      "requires_opening_device": false, "uses_heat": false, "requires_soldering": false,
+      "note": "Booking options (in person or by mail) depend on country. The cost estimate tool did not load when checked.",
+      "verified_at": "2026-10-31",
+      "verified_note": "Offers troubleshooting, service options and warranty coverage info."
+    },
+    {
+      "id": "apple-screen-service",
+      "brand": "Apple", "model": null, "faults": ["cracked_screen"], "type": "service",
+      "title": "Apple Service and Repair for iPhone Screens",
+      "url": "https://support.apple.com/en-al/iphone/repair/screen-replacement",
+      "source": "Apple Support",
+      "requires_opening_device": false, "uses_heat": false, "requires_soldering": false,
+      "note": "Albania version of the page. Options depend on country.",
+      "verified_at": "2026-10-31",
+      "verified_note": "Online troubleshooting, Apple Authorized Service Provider, repair status."
+    },
+    {
+      "id": "apple-overheating-support",
+      "brand": "Apple", "model": null, "faults": ["overheating"], "type": "support",
+      "title": "If your iPhone or iPad gets too hot or too cold",
+      "url": "https://support.apple.com/118431",
+      "source": "Apple Support",
+      "requires_opening_device": false, "uses_heat": false, "requires_soldering": false,
+      "note": "",
+      "verified_at": "2026-10-31",
+      "verified_note": "Power off, move somewhere cooler away from sunlight, let it cool fully."
+    },
+    {
+      "id": "apple-liquid-info",
+      "brand": "Apple", "model": null, "faults": ["liquid_damage"], "type": "info",
+      "title": "Water and other liquid damage to iPhone isn't covered by warranty",
+      "url": "https://support.apple.com/en-gb/109350",
+      "source": "Apple Support",
+      "requires_opening_device": false, "uses_heat": false, "requires_soldering": false,
+      "note": "Explains liquid contact indicators and warranty. It does not give drying steps.",
+      "verified_at": "2026-10-31",
+      "verified_note": "Says to contact Apple or an authorised provider for inspection if unsure."
+    },
+    {
+      "id": "apple-iphone13-screen-guide",
+      "brand": "Apple", "model": "iPhone 13", "faults": ["cracked_screen"], "type": "guide",
+      "title": "iPhone 13 Screen Replacement (iFixit)",
+      "url": "https://www.ifixit.com/Guide/iPhone+13+Display+Replacement/145897",
+      "source": "iFixit", "difficulty": "Moderate (1 to 2 hours)",
+      "requires_opening_device": true, "uses_heat": true, "requires_soldering": false,
+      "note": "Advanced repair: opens the phone, uses heat and cuts adhesive. A technician is the safer choice.",
+      "verified_at": "2026-10-31",
+      "verified_note": "Opened. Moderate, 1 to 2 hours. Involves opening the phone, applying heat and separating adhesive."
+    },
+    {
+      "id": "samsung-charging-support",
+      "brand": "Samsung", "model": null, "faults": ["charging"], "type": "support",
+      "title": "What to do if your Galaxy phone is not charging",
+      "url": "https://www.samsung.com/ae/support/mobile-devices/what-to-do-if-your-galaxy-phone-is-not-charging/",
+      "source": "Samsung Support",
+      "requires_opening_device": false, "uses_heat": false, "requires_soldering": false,
+      "note": "United Arab Emirates version of the page.",
+      "verified_at": "2026-10-31",
+      "verified_note": "Check charger and cable, clean port, soft reboot, update, Safe Mode, Samsung Members diagnostics. No opening of the phone."
+    },
+    {
+      "id": "samsung-overheating-support",
+      "brand": "Samsung", "model": null, "faults": ["overheating"], "type": "support",
+      "title": "What to do when your phone heats up",
+      "url": "https://www.samsung.com/ae/support/mobile-devices/what-to-do-when-your-phone-heats-up/",
+      "source": "Samsung Support",
+      "requires_opening_device": false, "uses_heat": false, "requires_soldering": false,
+      "note": "United Arab Emirates version of the page.",
+      "verified_at": "2026-10-31",
+      "verified_note": "Rest the phone, turn off radios, close apps, lower brightness, remove the case, unplug the charger."
+    },
+    {
+      "id": "samsung-performance-support",
+      "brand": "Samsung", "model": null, "faults": ["performance"], "type": "support",
+      "title": "What to do when your Samsung Galaxy device appears to be slow or unresponsive",
+      "url": "https://www.samsung.com/ae/support/mobile-devices/samsung-galaxy-device-appears-to-be-slow-or-unresponsive/",
+      "source": "Samsung Support",
+      "requires_opening_device": false, "uses_heat": false, "requires_soldering": false,
+      "note": "United Arab Emirates version of the page.",
+      "verified_at": "2026-10-31",
+      "verified_note": "Install updates, close background apps, reboot, run Phone diagnostics."
+    },
+    {
+      "id": "samsung-battery-support",
+      "brand": "Samsung", "model": null, "faults": ["battery"], "type": "support",
+      "title": "What to do when your Samsung Galaxy device battery drains faster",
+      "url": "https://www.samsung.com/ae/support/mobile-devices/what-to-do-when-your-samsung-galaxy-device-battery-drains-faster/",
+      "source": "Samsung Support",
+      "requires_opening_device": false, "uses_heat": false, "requires_soldering": false,
+      "note": "Software checks only. It says the battery is a consumable part and lost capacity cannot be restored.",
+      "verified_at": "2026-10-31",
+      "verified_note": "Turn off unused features, Device care, sleeping apps, power saving, uninstall draining apps, battery diagnostics."
+    },
+    {
+      "id": "samsung-a51-screen-guide",
+      "brand": "Samsung", "model": "Galaxy A51", "faults": ["cracked_screen"], "type": "guide",
+      "title": "Samsung Galaxy A51 Screen Replacement (iFixit)",
+      "url": "https://proxy.ifixit.com/Guide/Samsung+Galaxy+A51+Screen+Replacement/135277",
+      "source": "iFixit", "difficulty": "Moderate (1 to 2 hours)",
+      "requires_opening_device": true, "uses_heat": true, "requires_soldering": false,
+      "note": "Advanced repair: opens the phone, uses heat and cuts adhesive. The link host is proxy.ifixit.com, so check the www.ifixit.com version opens too.",
+      "verified_at": "2026-10-31",
+      "verified_note": "Opened. Moderate, 1 to 2 hours. Involves opening the phone, heat and cutting adhesive."
+    },
+    {
+      "id": "google-charging-support",
+      "brand": "Google", "model": null, "faults": ["charging"], "type": "support",
+      "title": "Fix a Pixel phone that won't charge or turn on",
+      "url": "https://support.google.com/pixelphone/answer/7167687",
+      "source": "Pixel Phone Help",
+      "requires_opening_device": false, "uses_heat": false, "requires_soldering": false,
+      "note": "",
+      "verified_at": "2026-10-31",
+      "verified_note": "Check charger, cable and outlet, charge for 10 minutes, reset manually, contact support. No opening of the phone."
+    },
+    {
+      "id": "google-overheating-support",
+      "brand": "Google", "model": null, "faults": ["overheating"], "type": "support",
+      "title": "Help keep your Pixel phone from feeling too warm or hot",
+      "url": "https://support.google.com/pixelphone/answer/3333708",
+      "source": "Pixel Phone Help",
+      "requires_opening_device": false, "uses_heat": false, "requires_soldering": false,
+      "note": "",
+      "verified_at": "2026-10-31",
+      "verified_note": "Check device temperature, pause heavy apps, lower brightness, unplug and cool down."
+    },
+    {
+      "id": "google-repair-service",
+      "brand": "Google", "model": null, "faults": ["cracked_screen", "charging"], "type": "service",
+      "title": "Get your device repaired (Pixel Phone Help)",
+      "url": "https://support.google.com/pixelphone/answer/13516446",
+      "source": "Pixel Phone Help",
+      "requires_opening_device": false, "uses_heat": false, "requires_soldering": false,
+      "note": "Options depend on device, warranty and country. Availability in Sri Lanka has not been confirmed.",
+      "verified_at": "2026-10-31",
+      "verified_note": "Walk-in or mail-in repair for cracked screens and phones that won't charge. Does not mention battery replacement."
+    },
+    {
+      "id": "google-pixel8a-screen-guide",
+      "brand": "Google", "model": "Pixel 8a", "faults": ["cracked_screen"], "type": "guide",
+      "title": "Google Pixel 8a Screen Replacement (iFixit)",
+      "url": "https://tr.ifixit.com/Guide/Google+Pixel+8a+Screen+Replacement/173219",
+      "source": "iFixit", "difficulty": "Medium (1 to 2 hours)",
+      "requires_opening_device": true, "uses_heat": true, "requires_soldering": false,
+      "note": "Advanced repair: opens the phone, uses heat and replaces adhesive. This is the Turkish iFixit site, so the page text may be in Turkish.",
+      "verified_at": "2026-10-31",
+      "verified_note": "Opened. Medium, 1 to 2 hours. Involves opening the phone, heat (hair dryer, heat gun or hot plate) and replacing adhesive."
+    },
+    {
+      "id": "xiaomi-charging-support",
+      "brand": "Xiaomi", "model": null, "faults": ["charging"], "type": "support",
+      "title": "Why can't the REDMI 13 charge?",
+      "url": "https://www.mi.com/global/support/faq/details/KA-657648/",
+      "source": "Xiaomi Support",
+      "requires_opening_device": false, "uses_heat": false, "requires_soldering": false,
+      "note": "Written for the REDMI 13, not the Note 13. The checks are general.",
+      "verified_at": "2026-10-31",
+      "verified_note": "Check adapter and cable, let the phone cool, dry the USB port, update, restart, then contact after-sales."
+    },
+    {
+      "id": "xiaomi-overheating-support",
+      "brand": "Xiaomi", "model": null, "faults": ["overheating"], "type": "support",
+      "title": "How to do if mobile phone overheat when playing games, charging, watching movies?",
+      "url": "https://www.mi.com/global/support/faq/details/KA-06909/",
+      "source": "Xiaomi Support",
+      "requires_opening_device": false, "uses_heat": false, "requires_soldering": false,
+      "note": "Mostly explains why phones warm up. For serious overheating it says to visit an authorized after-sales center.",
+      "verified_at": "2026-10-31",
+      "verified_note": "No disassembly instructions."
+    },
+    {
+      "id": "xiaomi-battery-support",
+      "brand": "Xiaomi", "model": null, "faults": ["battery"], "type": "support",
+      "title": "The REDMI Note 13 Pro consumes power quickly",
+      "url": "https://www.mi.com/uk/support/faq/details/KA-167049",
+      "source": "Xiaomi Support",
+      "requires_opening_device": false, "uses_heat": false, "requires_soldering": false,
+      "note": "Written for the Note 13 Pro. It only covers display settings (dark mode, auto brightness, refresh rate).",
+      "verified_at": "2026-10-31",
+      "verified_note": "Settings-only steps."
+    }
+  ]
+}

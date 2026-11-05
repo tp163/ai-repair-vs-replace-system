@@ -94,11 +94,34 @@ def _render_results(state: dict, fault: str) -> None:
         f'<p class="catalog-note">{escape(str(diagnosis.get("uncertainty", "")))}</p></div>',
         unsafe_allow_html=True,
     )
+    if triage.get("escalate_to_technician"):
+        st.markdown(
+            f'<div class="glass-card" style="border: 1px solid rgba(239,68,68,0.7); background: rgba(239,68,68,0.12); margin-bottom: 1rem;">'
+            f'<strong style="color: #f87171; font-size: 0.95rem;">⚠ Safety Stop: Technician inspection required</strong>'
+            f'<p style="color: #fca5a5; margin: 0.35rem 0 0; font-size: 0.85rem;">'
+            f'{escape(str(triage.get("escalation_reason", "Stop using the device and have it inspected by a qualified professional.")))}'
+            f'</p></div>',
+            unsafe_allow_html=True,
+        )
     st.markdown('<p class="section-head">Safe checks and repair guidance</p>', unsafe_allow_html=True)
-    steps = "".join(f"<li>{escape(str(step))}</li>" for step in triage.get("steps", []))
+    def _step_html(step: dict) -> str:
+        links = ""
+        for r in step.get("resources", []):
+            url = str(r.get("url", ""))
+            if not url.startswith(("https://", "http://")):
+                continue
+            tag = " (advanced: opens the phone, uses heat)" if r.get("requires_opening_device") else ""
+            links += (f' <a href="{escape(url, quote=True)}" target="_blank" rel="noopener">'
+                      f'{escape(str(r.get("title", "Guide")))}</a>'
+                      f'<span class="catalog-note"> · {escape(str(r.get("source", "")))}{escape(tag)}</span>')
+        return f"<li>{escape(str(step.get('text', '')))}{('<br>' + links) if links else ''}</li>"
+
+    steps = "".join(_step_html(s) for s in triage.get("detailed_steps", [])) or "".join(
+        f"<li>{escape(str(s))}</li>" for s in triage.get("steps", []))
     st.markdown(
         f'<div class="glass-card"><ul class="guidance-list">{steps}</ul>'
-        f'<p class="catalog-note">{escape(str(triage.get("safety_note", "")))}</p></div>',
+        f'<p class="catalog-note">{escape(str(triage.get("safety_note", "")))}</p>'
+        f'<p class="catalog-note">{escape(str(triage.get("resource_note", "")))}</p></div>',
         unsafe_allow_html=True,
     )
     st.markdown('<p class="section-head">Repair cost and next step</p>', unsafe_allow_html=True)
@@ -296,7 +319,8 @@ def page_diagnose() -> None:
                     encoded = base64.b64encode(uploaded_image.getvalue()).decode("ascii")
                     image_data_uri = f"data:{uploaded_image.type};base64,{encoded}"
                 state = run_pipeline(old_device, needs, float(budget),
-                                     issue_description=fault, image_data_uri=image_data_uri)
+                                     issue_description=fault, image_data_uri=image_data_uri,
+                                     device_confirmation=confirmation)
                 status.update(label="Analysis complete", state="complete")
             st.session_state.last_state = state
             st.session_state.last_fault = fault
