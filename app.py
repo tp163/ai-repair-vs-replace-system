@@ -123,12 +123,43 @@ def _render_results(state: dict, fault: str) -> None:
             source_url = escape(raw_source_url, quote=True) if raw_source_url.startswith(("https://", "http://")) else ""
             source_link = (f'<a href="{source_url}" target="_blank" rel="noopener">{source}</a>'
                            if source_url else source)
+            is_verified = bool(repair_cost.get("verified", False))
+            pricing_type = str(repair_cost.get("pricing_type", "indicative_estimate"))
+            if is_verified:
+                badge = '<span class="spec-tag highlight" style="font-size:0.7rem; color:#4ade80; border-color:rgba(74,222,128,0.4);">Verified Price</span>'
+                cost_type_label = "Verified quotation"
+            elif pricing_type == "catalog_price":
+                badge = '<span class="spec-tag" style="font-size:0.7rem; color:#38bdf8; background:rgba(56,189,248,0.15); border:1px solid rgba(56,189,248,0.3);">Unverified Catalog Listing</span>'
+                cost_type_label = "Catalog range (unverified)"
+            else:
+                badge = '<span class="spec-tag" style="font-size:0.7rem; color:#fbbf24; background:rgba(245,158,11,0.15); border:1px solid rgba(245,158,11,0.3);">Unverified Indicative Range</span>'
+                cost_type_label = "Indicative range"
+
+            quality = escape(str(repair_cost.get("part_quality", "")))
+            evidence_status = escape(str(repair_cost.get("evidence_status", "")))
+            terms_parts = [escape(str(p)) for p in (repair_cost.get("labor_included"), repair_cost.get("warranty_duration")) if p]
+            terms_text = " · ".join(terms_parts)
+            quality_html = f'<p style="font-size:0.76rem; color:#93c5fd; margin:0.2rem 0 0.15rem;">Part: {quality}</p>' if quality else ''
+            terms_html = f'<p class="catalog-note" style="margin:0 0 0.35rem;">{terms_text}</p>' if terms_text else ''
+            evidence_html = f'<p class="catalog-note" style="margin:0 0 0.35rem;">{evidence_status}</p>' if evidence_status else ''
+            quote_note = (
+                "Confirm current availability, selected part grade, and final price with the repairer; this is not a confirmed quote."
+                if not is_verified else "Confirm the quote is still valid before booking."
+            )
+
             cost_html = (
-                f'<div style="font-size:1.15rem; font-weight:700; color:#38bdf8; margin-bottom:0.2rem;">'
-                f'LKR {repair_cost["min_lkr"]:,.0f} – {repair_cost["max_lkr"]:,.0f}'
+                f'<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.2rem;">'
+                f'<div style="font-size:1.15rem; font-weight:700; color:#38bdf8;">'
+                f'LKR {repair_cost["min_lkr"]:,.0f} - {repair_cost["max_lkr"]:,.0f}'
                 f'</div>'
-                f'<p class="catalog-note" style="margin-bottom:0.45rem;">Estimate from {source_link}'
-                f'{(" · checked " + escape(str(repair_cost.get("retrieved_at")))) if repair_cost.get("retrieved_at") else ""}</p>'
+                f'{badge}'
+                f'</div>'
+                f'{quality_html}'
+                f'{terms_html}'
+                f'{evidence_html}'
+                f'<p class="catalog-note" style="margin-bottom:0.45rem;">{cost_type_label} from {source_link}'
+                f'{(" · recorded " + escape(str(repair_cost.get("retrieved_at")))) if repair_cost.get("retrieved_at") else ""}</p>'
+                f'<p class="catalog-note" style="margin-bottom:0.45rem;">{escape(quote_note)}</p>'
             )
         else:
             cost_html = f'<p style="font-size:0.85rem; color:#94a3b8; margin-bottom:0.45rem;">{escape(str(repair_cost.get("message", "A verified repair estimate is not available.")))}</p>'
@@ -265,7 +296,7 @@ def page_diagnose() -> None:
   <h2 style="font-family:var(--font-display);font-size:1.6rem;font-weight:900;
              color:#fff;margin:0 0 0.2rem;letter-spacing:-0.02em;">Diagnose My Phone</h2>
   <p style="color:#7a9abf;font-size:0.88rem;margin:0;">
-    Identify phone faults, explore verified repair costs, and compare replacement options.
+    Identify phone faults, review sourced repair ranges when available, and compare replacement options. Prices may be unverified or vary by part grade; confirm the final quote with the repairer.
   </p>
 </div>
 """, unsafe_allow_html=True)
