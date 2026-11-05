@@ -830,6 +830,7 @@ div[data-testid="stStatusWidget"] {
 }
 
 @media (max-width: 600px) {
+  .diagnose-preview-grid { grid-template-columns: minmax(0, 1fr) !important; }
   .ann-bar { padding: 0.45rem 0.85rem; justify-content: center; font-size: 0.68rem; }
   .ann-bar .ann-side:last-child { display: none; }
   .revivai-nav { padding: 0.65rem 0.85rem; gap: 0.4rem; }
@@ -892,7 +893,7 @@ div[data-testid="stStatusWidget"] {
    (remove internal padding on diagnose page)
 ═══════════════════════════════════════════════ */
 div[data-testid="stHorizontalBlock"] {
-  gap: 0 !important;
+  gap: 1.5rem !important;
   align-items: flex-start !important;
 }
 div[data-testid="column"] > div:first-child {
@@ -978,13 +979,13 @@ div[data-testid="stStatusWidget"] span {
 
 /* Keep inner pages on the same centered content grid as the landing page. */
 .inner-page-shell {
-  width: min(100% - 3rem, 1120px);
+  width: min(100% - 3rem, 1280px);
   margin: 0 auto;
   padding: clamp(1.25rem, 3.5vw, 2.5rem) 0;
   box-sizing: border-box;
 }
 .inner-page-intro {
-  width: min(100% - 3rem, 1120px);
+  width: min(100% - 3rem, 1280px);
   margin: 0 auto;
   padding: 1.5rem 0 0.75rem;
   box-sizing: border-box;
@@ -1001,7 +1002,7 @@ div[data-testid="stStatusWidget"] span {
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.07em;
-  margin: 0.2rem 0 0.6rem;
+  margin: 0.9rem 0 0.75rem;
   text-transform: uppercase;
 }
 .agent-grid {
@@ -1010,14 +1011,14 @@ div[data-testid="stStatusWidget"] span {
   gap: 0.2rem 1rem;
 }
 div[data-testid="stHorizontalBlock"] {
-  width: min(100% - 3rem, 1120px);
+  width: min(100% - 3rem, 1280px);
   margin: 0 auto;
   gap: 1.25rem !important;
   box-sizing: border-box;
 }
 @media (max-width: 900px) {
   .inner-page-shell, .inner-page-intro,
-  div[data-testid="stHorizontalBlock"] { width: min(100% - 2rem, 1120px); }
+  div[data-testid="stHorizontalBlock"] { width: min(100% - 2rem, 1280px); }
   .catalog-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 600px) {

@@ -7,6 +7,7 @@ from __future__ import annotations
 import base64
 from html import escape
 import sys
+from datetime import date
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -80,20 +81,7 @@ def _render_results(state: dict, fault: str) -> None:
     triage = state.get("troubleshooting", {})
     repair_cost = state.get("repair_cost_estimate", {})
     decision = state.get("decision", {})
-    st.markdown('<p class="section-head">Issue assessment</p>', unsafe_allow_html=True)
-    fault_label = escape(str(diagnosis.get("fault_category", "Issue not identified")).replace("_", " ").title())
-    confidence = escape(str(diagnosis.get("confidence", "low")).title())
-    image_status = ("Photo reviewed by the configured model" if diagnosis.get("image_reviewed")
-                    else ("Photo attached; visual analysis unavailable in demo mode" if diagnosis.get("image_attached")
-                          else "Based on the description provided"))
-    st.markdown(
-        f'<div class="glass-card"><strong>{fault_label}</strong>'
-        f'<p>{escape(str(diagnosis.get("probable_cause", "")))}</p>'
-        f'<p class="catalog-note">Confidence: {confidence} · '
-        f'{image_status}</p>'
-        f'<p class="catalog-note">{escape(str(diagnosis.get("uncertainty", "")))}</p></div>',
-        unsafe_allow_html=True,
-    )
+
     if triage.get("escalate_to_technician"):
         st.markdown(
             f'<div class="glass-card" style="border: 1px solid rgba(239,68,68,0.7); background: rgba(239,68,68,0.12); margin-bottom: 1rem;">'
@@ -103,6 +91,62 @@ def _render_results(state: dict, fault: str) -> None:
             f'</p></div>',
             unsafe_allow_html=True,
         )
+
+    col_diag, col_decision = st.columns(2, gap="medium")
+    with col_diag:
+        st.markdown('<p class="section-head">Issue assessment</p>', unsafe_allow_html=True)
+        fault_label = escape(str(diagnosis.get("fault_category", "Issue not identified")).replace("_", " ").title())
+        confidence = escape(str(diagnosis.get("confidence", "low")).title())
+        image_status = ("Photo reviewed" if diagnosis.get("image_reviewed")
+                        else ("Photo attached" if diagnosis.get("image_attached")
+                              else "Description only"))
+        uncertainty = diagnosis.get("uncertainty", "")
+        uncertainty_html = f'<p class="catalog-note" style="margin-top:0.35rem;">{escape(str(uncertainty))}</p>' if uncertainty else ''
+        st.markdown(
+            f'<div class="glass-card" style="min-height:160px;">'
+            f'<div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:0.4rem;">'
+            f'<strong style="font-size:1.02rem; color:#fff;">{fault_label}</strong>'
+            f'<span class="spec-tag" style="font-size:0.7rem;">{confidence} Confidence</span>'
+            f'</div>'
+            f'<p style="font-size:0.85rem; line-height:1.5; color:#cbd5e1; margin:0 0 0.35rem;">{escape(str(diagnosis.get("probable_cause", "")))}</p>'
+            f'<p class="catalog-note">Input: {image_status}</p>'
+            f'{uncertainty_html}'
+            f'</div>',
+            unsafe_allow_html=True,
+        )
+
+    with col_decision:
+        st.markdown('<p class="section-head">Repair & Decision</p>', unsafe_allow_html=True)
+        if repair_cost.get("status") == "estimate":
+            source = escape(str(repair_cost.get("source", "Source")))
+            raw_source_url = str(repair_cost.get("source_url", ""))
+            source_url = escape(raw_source_url, quote=True) if raw_source_url.startswith(("https://", "http://")) else ""
+            source_link = (f'<a href="{source_url}" target="_blank" rel="noopener">{source}</a>'
+                           if source_url else source)
+            cost_html = (
+                f'<div style="font-size:1.15rem; font-weight:700; color:#38bdf8; margin-bottom:0.2rem;">'
+                f'LKR {repair_cost["min_lkr"]:,.0f} – {repair_cost["max_lkr"]:,.0f}'
+                f'</div>'
+                f'<p class="catalog-note" style="margin-bottom:0.45rem;">Estimate from {source_link}'
+                f'{(" · checked " + escape(str(repair_cost.get("retrieved_at")))) if repair_cost.get("retrieved_at") else ""}</p>'
+            )
+        else:
+            cost_html = f'<p style="font-size:0.85rem; color:#94a3b8; margin-bottom:0.45rem;">{escape(str(repair_cost.get("message", "A verified repair estimate is not available.")))}</p>'
+
+        path_label = escape(str(decision.get("recommended_path", "get_repair_quote")).replace("_", " ").title())
+        reason = escape(str(decision.get("reason", "")))
+        st.markdown(
+            f'<div class="glass-card" style="min-height:160px;">'
+            f'{cost_html}'
+            f'<div style="display:flex; align-items:center; gap:0.4rem; margin-bottom:0.35rem;">'
+            f'<span style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.05em; color:#a5b4fc; font-weight:600;">Recommended Path:</span> '
+            f'<span class="spec-tag highlight" style="font-size:0.75rem;">{path_label}</span>'
+            f'</div>'
+            f'<p style="font-size:0.82rem; line-height:1.45; color:#cbd5e1; margin:0;">{reason}</p>'
+            f'</div>',
+            unsafe_allow_html=True,
+        )
+
     st.markdown('<p class="section-head">Safe checks and repair guidance</p>', unsafe_allow_html=True)
     def _step_html(step: dict) -> str:
         links = ""
@@ -110,36 +154,24 @@ def _render_results(state: dict, fault: str) -> None:
             url = str(r.get("url", ""))
             if not url.startswith(("https://", "http://")):
                 continue
-            tag = " (advanced: opens the phone, uses heat)" if r.get("requires_opening_device") else ""
+            tag = " (advanced: opens phone)" if r.get("requires_opening_device") else ""
             links += (f' <a href="{escape(url, quote=True)}" target="_blank" rel="noopener">'
                       f'{escape(str(r.get("title", "Guide")))}</a>'
-                      f'<span class="catalog-note"> · {escape(str(r.get("source", "")))}{escape(tag)}</span>')
+                      f'<span class="catalog-note"> · {escape(str(r.get("source", "")))}'
+                      f'{escape(tag)}</span>')
         return f"<li>{escape(str(step.get('text', '')))}{('<br>' + links) if links else ''}</li>"
 
     steps = "".join(_step_html(s) for s in triage.get("detailed_steps", [])) or "".join(
         f"<li>{escape(str(s))}</li>" for s in triage.get("steps", []))
+    safety_note = triage.get("safety_note", "")
+    resource_note = triage.get("resource_note", "")
+    notes_html = ""
+    if safety_note:
+        notes_html += f'<p class="catalog-note" style="margin-top:0.4rem;">{escape(str(safety_note))}</p>'
+    if resource_note:
+        notes_html += f'<p class="catalog-note">{escape(str(resource_note))}</p>'
     st.markdown(
-        f'<div class="glass-card"><ul class="guidance-list">{steps}</ul>'
-        f'<p class="catalog-note">{escape(str(triage.get("safety_note", "")))}</p>'
-        f'<p class="catalog-note">{escape(str(triage.get("resource_note", "")))}</p></div>',
-        unsafe_allow_html=True,
-    )
-    st.markdown('<p class="section-head">Repair cost and next step</p>', unsafe_allow_html=True)
-    if repair_cost.get("status") == "estimate":
-        source = escape(str(repair_cost.get("source", "Source")))
-        raw_source_url = str(repair_cost.get("source_url", ""))
-        source_url = escape(raw_source_url, quote=True) if raw_source_url.startswith(("https://", "http://")) else ""
-        source_link = (f'<a href="{source_url}" target="_blank" rel="noopener">{source}</a>'
-                       if source_url else source)
-        cost_html = (f'<strong>LKR {repair_cost["min_lkr"]:,.0f} – LKR {repair_cost["max_lkr"]:,.0f}</strong>'
-                     f'<p class="catalog-note">Estimate from {source_link}'
-                     f'{(" · checked " + escape(str(repair_cost.get("retrieved_at")))) if repair_cost.get("retrieved_at") else ""}. Not a confirmed quotation.</p>')
-    else:
-        cost_html = f'<p>{escape(str(repair_cost.get("message", "A verified repair estimate is not available.")))}</p>'
-    path_label = escape(str(decision.get("recommended_path", "get_repair_quote")).replace("_", " ").title())
-    st.markdown(
-        f'<div class="glass-card">{cost_html}<strong>Suggested path: {path_label}</strong>'
-        f'<p>{escape(str(decision.get("reason", "")))}</p></div>',
+        f'<div class="glass-card"><ul class="guidance-list">{steps}</ul>{notes_html}</div>',
         unsafe_allow_html=True,
     )
 
@@ -211,25 +243,30 @@ def page_diagnose() -> None:
   <h2 style="font-family:var(--font-display);font-size:1.6rem;font-weight:900;
              color:#fff;margin:0 0 0.2rem;letter-spacing:-0.02em;">Diagnose My Phone</h2>
   <p style="color:#7a9abf;font-size:0.88rem;margin:0;">
-    Describe the issue or upload a photo. Get safe next steps, a sourced repair estimate when available, and replacement options.
+    Identify phone faults, explore verified repair costs, and compare replacement options.
   </p>
 </div>
 """, unsafe_allow_html=True)
 
-    col_form, col_results = st.columns([1, 1.9], gap="large")
+    col_form, col_results = st.columns([1, 1.25], gap="large")
 
     with col_form:
-        st.markdown('<p class="form-section-label">Current Device</p>', unsafe_allow_html=True)
+        st.markdown('<p class="form-section-label">Device Information</p>', unsafe_allow_html=True)
 
         with st.container():
-            brand      = st.text_input("Brand",  value="Samsung",    key="d_brand")
-            model      = st.text_input("Model",  value="Galaxy A51", key="d_model")
+            c_b, c_m = st.columns(2)
+            with c_b:
+                brand = st.text_input("Brand", placeholder="e.g. Samsung", key="d_brand_v2")
+            with c_m:
+                model = st.text_input("Model", placeholder="e.g. Galaxy A51", key="d_model_v2")
+
             uploaded_image = st.file_uploader(
-                "Upload a photo of the phone or damaged area (optional)",
+                "Photo of phone or damaged area (optional)",
                 type=["jpg", "jpeg", "png", "webp"], key="d_phone_image",
             )
             if uploaded_image is not None:
-                st.image(uploaded_image.getvalue(), caption="Uploaded phone image", width=180)
+                st.image(uploaded_image.getvalue(), caption="Uploaded phone image", width=160)
+
             try:
                 catalogue = load_phones()
             except (FileNotFoundError, ValueError):
@@ -242,57 +279,70 @@ def page_diagnose() -> None:
             if match["options"]:
                 options_by_id = {o["id"]: o for o in match["options"]}
                 selected_id = st.selectbox(
-                    "Matching device variant", list(options_by_id),
+                    "Matching catalogue variant", list(options_by_id),
                     format_func=lambda i: options_by_id[i]["label"],
                     key="d_device_variant",
                 )
                 selected_device = options_by_id[selected_id]["phone"]
                 st.caption(" · ".join(f"{k}: {v}" for k, v in format_specs(selected_device)))
                 user_confirmed = st.checkbox(
-                    "I confirm this is my device variant",
-                    key=f"d_confirm_{selected_id}",
+                    "I confirm this is my exact model and variant",
+                    key=f"d_confirm_v2_{selected_id}",
                 )
             elif catalogue:
                 if match["suggestions"]:
-                    st.caption("Did you mean: " + ", ".join(
-                        f"{s['brand']} {s['model']}" for s in match["suggestions"]) + "?")
-                else:
-                    st.caption("No catalogue match.")
+                    st.caption("Similar models: " + ", ".join(
+                        f"{s['brand']} {s['model']}" for s in match["suggestions"]) + ".")
                 manual_ok = st.checkbox(
-                    "Continue with the details I entered (unverified)", key="d_manual_ok",
+                    "Continue with entered details (unverified)", key="d_manual_ok_v2",
                 )
             confirmation = build_confirmation(match, selected_id, user_confirmed, manual_ok)
-            year       = st.slider("Year purchased", 2015, 2026, 2021, key="d_year")
-            orig_price = st.number_input("Original price (LKR)", min_value=0,
-                                         value=75_000, step=5_000, key="d_price")
-            condition  = st.selectbox(
-                "Condition", COND_VALUES, index=2,
-                format_func=lambda v: dict(CONDITIONS).get(v, v), key="d_cond",
-            )
+
+            c_y, c_p = st.columns(2)
+            with c_y:
+                year_options = ["Select year", *range(date.today().year, 1999, -1)]
+                year_choice = st.selectbox("Purchase Year", year_options, key="d_year_v2")
+                year = int(year_choice) if isinstance(year_choice, int) else None
+            with c_p:
+                orig_price = st.number_input(
+                    "Purchase Price (LKR)", min_value=0,
+                    value=0, step=5_000, key="d_price_v2",
+                    help="Approximate purchase price. Leave 0 if unknown.",
+                )
+
+            st.markdown('<p class="form-section-label">Condition & Budget</p>', unsafe_allow_html=True)
+            c_c, c_bgt = st.columns(2)
+            with c_c:
+                condition = st.selectbox(
+                    "Condition before issue", COND_VALUES, index=None,
+                    format_func=lambda v: dict(CONDITIONS).get(v, v),
+                    placeholder="Select condition", key="d_cond_v2",
+                )
+            with c_bgt:
+                budget = st.number_input(
+                    "Replacement Budget (LKR)", min_value=0,
+                    value=0, step=5_000, key="d_budget_v2",
+                    help="Max budget for a replacement phone. Leave 0 if no limit.",
+                )
+
+            st.markdown('<p class="form-section-label">Issue & Preferences</p>', unsafe_allow_html=True)
             fault = st.text_area(
-                "Describe the issue", value="screen cracked",
-                placeholder="What happened? Include symptoms, error messages, and when it started.",
-                height=100, key="d_fault",
+                "Describe the issue",
+                placeholder="What symptoms do you notice, when did they start, or what happened beforehand?",
+                height=90, key="d_fault_v2",
             )
-            st.markdown("""
-<p class="form-section-label">Preferences & Budget</p>""", unsafe_allow_html=True)
-            needs  = st.text_area(
-                "What matters to you?",
-                value="good camera and battery, occasional gaming",
-                height=80, key="d_needs",
+            needs = st.text_area(
+                "Replacement preferences (optional)",
+                placeholder="e.g. Long battery life, good camera, smooth gaming",
+                height=70, key="d_needs_v2",
             )
-            budget = st.number_input("Max budget (LKR)", min_value=0,
-                                     value=100_000, step=5_000, key="d_budget")
-            st.markdown("<br>", unsafe_allow_html=True)
+
             run = st.button("Analyze & Recommend", type="primary",
                             icon=":material/search:", use_container_width=True,
-                            disabled=not confirmation["confirmed"])
-            st.markdown(
-                f'<p style="font-size:0.7rem;color:#3a5a7a;margin-top:0.4rem;text-align:center;">'
-                f'LLM: <strong>{config.LLM_PROVIDER}</strong> · '
-                f'Live search: <strong>{"on" if config.ENABLE_LIVE_SEARCH else "off"}</strong></p>',
-                unsafe_allow_html=True,
-            )
+                            disabled=not (confirmation["confirmed"] and bool(brand.strip())
+                                          and bool(model.strip()) and year is not None
+                                          and condition is not None and bool(fault.strip())))
+            st.caption("Repair estimates are sourced when available and not confirmed quotes.")
 
     with col_results:
         if "last_state" not in st.session_state:
@@ -301,9 +351,9 @@ def page_diagnose() -> None:
         old_device = {
             "brand":              brand,
             "model":              model,
-            "year":               int(year),
+            "year":               int(year or date.today().year),
             "original_price_lkr": float(orig_price),
-            "condition":          condition,
+            "condition":          condition or "fair",
             "fault":              fault,
             "variant":            (selected_device or {}).get("variant") or (selected_device or {}).get("id", ""),
             "profile_confirmed":  confirmation["confirmed"],
@@ -330,32 +380,32 @@ def page_diagnose() -> None:
             _render_results(state, st.session_state.get("last_fault", ""))
         else:
             st.markdown(f"""
-<div class="glass-card" style="text-align:center;padding:3rem 2rem;margin:1rem 0;">
-  <div class="icon-tile lg" style="margin:0 auto 1rem;">{icon("cpu", cls="glow")}</div>
-  <p style="color:#e2eaf7;font-weight:700;font-size:1rem;margin:0 0 0.5rem;">
-    Ready to analyze your device
+<div class="glass-card" style="text-align:center;padding:2.25rem 1.75rem;margin:0.25rem 0;">
+  <div class="icon-tile lg" style="margin:0 auto 0.8rem;">{icon("cpu", cls="glow")}</div>
+  <p style="color:#e2eaf7;font-weight:700;font-size:1.05rem;margin:0 0 0.45rem;">
+    Comprehensive Decision Analysis
   </p>
-  <p style="color:#7a9abf;font-size:0.85rem;margin:0 0 1.5rem;line-height:1.65;">
-    Fill in your device details on the left,<br>
-    then click <strong style="color:#1a8fff;">Analyze &amp; Recommend</strong>
+  <p style="color:#7a9abf;font-size:0.85rem;margin:0 auto 1.25rem;line-height:1.6;max-width:34rem;">
+    Fill in your device details on the left to receive a step-by-step diagnosis, sourced repair estimate, and verified replacement recommendations.
   </p>
-  <div style="display:flex;gap:0.75rem;justify-content:center;flex-wrap:wrap;">
-    <div class="glass-card" style="text-align:left;min-width:140px;padding:0.9rem;">
+  <div class="diagnose-preview-grid" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0.75rem;text-align:left;">
+    <div class="glass-card" style="min-width:0;padding:1rem;">
       <div class="icon-tile" style="margin-bottom:0.55rem;">{icon("stethoscope")}</div>
       <p style="font-family:var(--font-display);font-weight:700;font-size:0.82rem;color:#fff;margin:0 0 0.15rem;">Diagnosis</p>
-      <p style="font-size:0.72rem;color:#7a9abf;margin:0;">Identify faults</p>
+      <p style="font-size:0.72rem;color:#7a9abf;margin:0;">Identifies fault causes and safe DIY checks</p>
     </div>
-    <div class="glass-card" style="text-align:left;min-width:140px;padding:0.9rem;">
+    <div class="glass-card" style="min-width:0;padding:1rem;">
       <div class="icon-tile cyan" style="margin-bottom:0.55rem;">{icon("coins")}</div>
-      <p style="font-family:var(--font-display);font-weight:700;font-size:0.82rem;color:#fff;margin:0 0 0.15rem;">Cost Analysis</p>
-      <p style="font-size:0.72rem;color:#7a9abf;margin:0;">Repair vs replace</p>
+      <p style="font-family:var(--font-display);font-weight:700;font-size:0.82rem;color:#fff;margin:0 0 0.15rem;">Repair Costs</p>
+      <p style="font-size:0.72rem;color:#7a9abf;margin:0;">Sourced repair price range and advice</p>
     </div>
-    <div class="glass-card" style="text-align:left;min-width:140px;padding:0.9rem;">
+    <div class="glass-card" style="min-width:0;padding:1rem;">
       <div class="icon-tile violet" style="margin-bottom:0.55rem;">{icon("phone")}</div>
-      <p style="font-family:var(--font-display);font-weight:700;font-size:0.82rem;color:#fff;margin:0 0 0.15rem;">Phone Match</p>
-      <p style="font-size:0.72rem;color:#7a9abf;margin:0;">Best replacements</p>
+      <p style="font-family:var(--font-display);font-weight:700;font-size:0.82rem;color:#fff;margin:0 0 0.15rem;">Replacements</p>
+      <p style="font-size:0.72rem;color:#7a9abf;margin:0;">Best phone options matched to your budget</p>
     </div>
   </div>
+  <p style="font-size:0.72rem;color:#7892b2;margin:1rem 0 0;">Pricing and repair estimates are subject to shop verification.</p>
 </div>
 """, unsafe_allow_html=True)
 
