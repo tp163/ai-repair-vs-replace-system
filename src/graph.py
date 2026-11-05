@@ -31,7 +31,7 @@ from langgraph.graph import StateGraph, END
 from . import llm as llm_module
 from .agents import (budget, comparison, decision, diagnosis, explanation, market, profiling,
                      recommendation, requirements, spec_retrieval,
-                     repair_cost, similarity, troubleshooting, verification)
+                     repair_cost, similarity, troubleshooting, verification, datasheet_rag)
 from .state import AgentState
 
 
@@ -55,6 +55,7 @@ def build_graph(llm=None):
         name: _node(mod, llm)
         for name, mod in [
             ("fault_diagnosis", diagnosis),
+            ("datasheet_rag", datasheet_rag),
             ("troubleshooting", troubleshooting),
             ("user_requirements", requirements),
             ("device_profiling", profiling),
@@ -74,7 +75,7 @@ def build_graph(llm=None):
         builder.add_node(name, fn)
 
     # Linear pipeline in information-dependency order.
-    order = ["fault_diagnosis", "troubleshooting", "user_requirements",
+    order = ["fault_diagnosis", "datasheet_rag", "troubleshooting", "user_requirements",
              "device_profiling", "repair_cost", "repair_decision", "spec_retrieval",
              "market_research", "similarity", "budget", "comparison", "recommendation",
              "verification", "explanation"]

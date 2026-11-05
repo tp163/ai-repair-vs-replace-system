@@ -176,6 +176,15 @@ def run(state: AgentState, llm=None) -> dict:
         steps = list(steps)
         escalate, reason, note = False, "", _SAFETY_NOTE
 
+        spec_answers = state.get("spec_answers", [])
+        if spec_answers:
+            first_ans = spec_answers[0]
+            ans_text = first_ans.get("answer", "")
+            first_claim = ans_text.split("\n")[0].strip("-* ")
+            if len(first_claim) > 15:
+                hw_step = f"Hardware context: {first_claim}. Keep this specification in mind when consulting a repairer."
+                steps.insert(len(steps) - 1, (hw_step, "safe"))
+
     detailed = _detailed(steps)
     device = state.get("old_device", {}) or {}
     brand, model = str(device.get("brand", "")), str(device.get("model", ""))

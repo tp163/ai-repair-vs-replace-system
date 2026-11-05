@@ -28,6 +28,7 @@ from typing import Literal, TypedDict
 class DeviceConfirmation(TypedDict, total=False):
     """Written by the Device Confirmation step (Person A, 5.1)."""
     confirmed: bool                 # analysis is blocked until this is True
+    unverified: bool                # user chose to proceed without a catalogue match
     match_status: Literal["exact", "multiple_variants", "not_found"]
     matched_id: str | None          # id of the catalogue row the user confirmed
     options: list[dict]             # variants shown to the user to pick from
@@ -88,7 +89,7 @@ class SpecAnswer(TypedDict, total=False):
     """Written by the Datasheet RAG step (Person A, 5.3)."""
     question: str
     answer: str
-    sources: list[dict]             # [{"doc","page","chunk_id","score"}]
+    sources: list[dict]             # section sources: doc, source_url, section, checked date
 
 
 # --------------------------------------------------------------------------

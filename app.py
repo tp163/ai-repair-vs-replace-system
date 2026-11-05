@@ -147,6 +147,28 @@ def _render_results(state: dict, fault: str) -> None:
             unsafe_allow_html=True,
         )
 
+    spec_answers = state.get("spec_answers", [])
+    if spec_answers:
+        with st.expander("📖 Datasheet Excerpts & Sources", expanded=False):
+            for ans in spec_answers:
+                st.markdown(f"**{ans.get('question', '')}**")
+                sources = ans.get("sources", [])
+                for src in sources:
+                    src_url = str(src.get("source_url", ""))
+                    doc_name = escape(str(src.get("doc", "Datasheet source")))
+                    link_html = (
+                        f'<a href="{escape(src_url, quote=True)}" target="_blank" rel="noopener">{doc_name}</a>'
+                        if src_url.startswith("https://") else doc_name
+                    )
+                    detail = f'Section: {escape(str(src.get("section", "")))} · Source: {link_html}'
+                    if src.get("date_verified"):
+                        detail += f' · Checked: {escape(str(src["date_verified"]))}'
+                    st.markdown(
+                        f'<p class="catalog-note">{detail}</p>',
+                        unsafe_allow_html=True,
+                    )
+                st.markdown(ans.get("answer", ""))
+
     st.markdown('<p class="section-head">Safe checks and repair guidance</p>', unsafe_allow_html=True)
     def _step_html(step: dict) -> str:
         links = ""
@@ -348,6 +370,13 @@ def page_diagnose() -> None:
         if "last_state" not in st.session_state:
             st.session_state.last_state = None
 
+        current_result_key = (
+            brand.strip().casefold(),
+            model.strip().casefold(),
+            confirmation.get("matched_id"),
+            fault.strip(),
+        )
+
         old_device = {
             "brand":              brand,
             "model":              model,
@@ -374,9 +403,14 @@ def page_diagnose() -> None:
                 status.update(label="Analysis complete", state="complete")
             st.session_state.last_state = state
             st.session_state.last_fault = fault
+            st.session_state.last_state_result_key = current_result_key
 
         state = st.session_state.last_state
-        if state:
+        result_matches_current_device = (
+            confirmation.get("confirmed")
+            and st.session_state.get("last_state_result_key") == current_result_key
+        )
+        if state and result_matches_current_device:
             _render_results(state, st.session_state.get("last_fault", ""))
         else:
             st.markdown(f"""

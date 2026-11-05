@@ -48,6 +48,19 @@ def _template(state: AgentState) -> str:
             )
     if ver:
         lines += ["", f"Verification: {'all checks passed' if ver['all_passed'] else 'some picks were replaced'} — {ver.get('prices_are', '')}."]
+    spec_answers = state.get("spec_answers", [])
+    if spec_answers:
+        top_spec = spec_answers[0]
+        sources = top_spec.get("sources", [])
+        src_label = sources[0].get("doc", "OEM Service Documentation") if sources else "OEM Service Documentation"
+        src_url = sources[0].get("source_url", "") if sources else ""
+        first_claim = top_spec.get("answer", "").split("\n")[0].strip("-* ")
+        lines.append("")
+        lines.append(f"Verified Hardware Context ({src_label}):")
+        lines.append(f"  {first_claim}")
+        if src_url:
+            lines.append(f"  Source Reference: {src_url}")
+
     lines.append("Live market prices were not consulted for these figures.")
     return "\n".join(lines)
 
@@ -69,6 +82,14 @@ def run(state: AgentState, llm) -> dict:
         "requirements": state.get("requirements", {}),
         "old_device_profile": state.get("old_device_profile", {}),
         "verification": state.get("verification", {}),
+        "verified_hardware_specs": [
+            {
+                "claim": a.get("answer", "").split("\n")[0].strip("-* "),
+                "source": a.get("sources", [{}])[0].get("doc", ""),
+                "url": a.get("sources", [{}])[0].get("source_url", ""),
+            }
+            for a in state.get("spec_answers", [])
+        ],
     }
     prompt = (
         "Explain these verified phone recommendations to the user in 3 short "
