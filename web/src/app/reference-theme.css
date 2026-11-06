@@ -1,0 +1,211 @@
+/* Reference: supplied hero image. Keep these visual proportions when extending features. */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap');
+body{background:#020a1b;font-family:'Inter',Arial,sans-serif;font-size:13px}
+h1,h2,h3,.brand{font-family:'Plus Jakarta Sans','Inter',Arial,sans-serif}
+.announcement{padding:5px 12px;font-size:9px;background:linear-gradient(105deg,#009afa,#4c32e9,#7823ed,#10bce9)}
+.announcement span{margin-left:45px}
+.header-inner{max-width:940px;padding:7px 0 1px;gap:25px}
+.brand{font-size:24px;line-height:1;gap:10px;letter-spacing:0}
+.brand small{font-size:7px;letter-spacing:0;margin-top:4px}
+.brand-icon{font-size:36px;line-height:1}
+.header-search{display:flex;align-items:center;gap:8px;border:1px solid #16223c;background:#080f21;border-radius:25px;flex:1;max-width:440px;margin:0 40px 0 60px;padding:4px 12px;font-size:10px}
+.header-search input{background:none!important;border:0!important;padding:0!important;margin:0!important;font-size:10px}
+.header-icons{display:flex;gap:20px}.header-icons button{padding:4px;background:none;border:0;color:#e3eafa;display:flex}
+nav{gap:48px;max-width:620px}nav button{font-size:11px;padding:10px 3px 9px;color:#fff;font-weight:600}
+main{width:min(1440px,calc(100% - 64px))}
+section{margin-bottom:15px}
+.hero{position:relative;isolation:isolate;min-height:0;height:clamp(230px,21vw,340px);display:flex;align-items:center;margin:0 -32px 10px;padding:22px 8%;overflow:hidden;background-image:linear-gradient(90deg,#020919 0%,#020919 33%,#020919dd 50%,#02091922 76%),url('/hero-phone-scene.png');background-size:100% 100%,cover;background-position:center,center;background-repeat:no-repeat}
+.hero>div:first-child{position:relative;z-index:1;max-width:60%}
+.hero h1{font-size:clamp(30px,2.7vw,38px);letter-spacing:-1.5px;margin:0 0 6px;font-weight:800;line-height:.99;max-width:560px}
+.hero p{font-size:clamp(11px,1.1vw,16px);line-height:1.25;margin:6px 0 10px;color:#e8eafa}
+.hero .actions{margin:12px 0 14px;gap:12px}
+.hero .primary,.hero .secondary{font-size:11px;padding:10px 18px;gap:10px}
+.hero-art{display:none}
+.trust{font-size:10px;color:white;gap:8px}.trust span{margin:0 7px;color:#ddd}.trust svg{width:14px;height:14px;color:#18bffc}
+.section-title h2{font-size:21px;margin:0;letter-spacing:-.6px;position:relative}.section-title h2:after{content:'';position:absolute;left:0;bottom:-5px;width:75px;height:1px;background:linear-gradient(90deg,#28c8ff,#833ced)}
+.issue-grid{gap:16px;margin-top:12px}.issue{padding:10px 16px;border-radius:10px;min-height:59px;font-size:13px;border-color:#154878;background:linear-gradient(110deg,#08213c,#101030)}
+.issue>svg:first-child{height:32px;width:32px;stroke-width:1.3}.issue:nth-child(2)>svg:first-child{color:#18e2b1}.issue:nth-child(4)>svg:first-child{color:#fa5f7f}.issue small{font-size:10px;margin-top:4px;color:#d3ddf2}.issue>svg:last-child{border-radius:50%;background:#182c56;padding:5px;box-sizing:content-box}
+.caption{margin:6px 0;font-size:11px}
+.phone-grid{gap:16px;margin:7px 0 10px;grid-template-columns:repeat(4,minmax(0,1fr))}
+.phone-card{padding:12px 18px;min-height:118px;gap:14px;border-radius:10px;background:linear-gradient(110deg,#0b162d,#090e22);align-items:center;flex-direction:row}
+.phone-card h3{font-size:12px;margin:4px 0}.phone-card .price{font-size:18px!important;margin:6px 0}.phone-card p{font-size:10px;margin:5px 0}.phone-card small{font-size:9px}.phone-card .text-button{font-size:10px;border-radius:20px;background:linear-gradient(100deg,#04b7ed,#8b20f0);color:white;padding:5px 13px;margin-top:5px}.phone-art{display:block;flex-shrink:0;width:68px;height:84px}.phone-cutout{display:block;width:68px;height:84px;background-image:url('/revivai-reference.webp');background-size:1024px 576px;background-position:-47px -382px}.color-1 .phone-cutout{background-position:-290px -382px}.color-2 .phone-cutout{background-position:-534px -382px}
+.agent-strip{padding:16px 36px;border-radius:12px;gap:26px;grid-template-columns:1.2fr repeat(3,1fr);border-color:#12649e;min-height:84px;background:radial-gradient(ellipse at 100% 100%,#5311e9,transparent 45%),linear-gradient(110deg,#06233e,#02112e 60%,#15105b)}
+.agent-strip h2{font-size:22px;letter-spacing:-.8px;border-right:2px solid #1297c2;padding-right:20px}.agent-strip>div{gap:18px}.agent-strip svg{width:44px;height:44px;padding:8px;flex-shrink:0;border:1px solid #21a7ec;border-radius:50%;filter:drop-shadow(0 0 5px #008cff)}.agent-strip strong{font-size:13px}.agent-strip small{font-size:10px;color:#c3cce0}
+footer{width:100%;padding:17px max(32px,8%);border-color:#1a2340;justify-content:space-between;font-size:12px;background:#050c1e;gap:14px}footer span{padding-right:25px;border-right:1px solid #8790a2}footer span:last-child{border:0;padding-right:0}footer svg{color:#248afa;fill:#16357d}
+@media(max-width:1100px){.header-inner{max-width:740px}.header-search{margin-left:35px;margin-right:25px}.header-icons{gap:14px}nav{gap:45px}main{width:calc(100% - 64px)}.hero{height:205px;padding-left:8%}.hero h1{font-size:34px}.hero .primary,.hero .secondary{padding:8px 16px;font-size:10px}.trust{font-size:8px}.trust span{margin:0 3px}.hero p{font-size:12px}.phone-card{padding:9px 12px;gap:10px;min-height:95px}.phone-art{height:76px;width:62px}.phone-card .price{font-size:14px!important}.phone-card h3{font-size:10px}.phone-card small{font-size:8px}.phone-card .text-button{font-size:9px;padding:4px 10px}.issue{min-height:44px;padding:7px 14px;font-size:11px}.issue small{font-size:9px}.issue>svg:first-child{width:28px;height:28px}.section-title h2{font-size:18px}.agent-strip{padding:12px 32px;min-height:64px;gap:22px}.agent-strip h2{font-size:18px}.agent-strip strong{font-size:11px}.agent-strip small{font-size:9px}.agent-strip>div{gap:14px}footer{font-size:10px}}
+@media(max-width:800px){.header-search{margin:0 10px}.header-icons{gap:10px}.header-inner{gap:12px}nav{gap:28px}.phone-grid,.issue-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.phone-card{min-height:115px}.hero{background-size:100% 100%,cover;background-position:center,68% center}.hero>div:first-child{max-width:72%}.trust{flex-wrap:wrap}.agent-strip{grid-template-columns:1fr 1fr}.agent-strip h2{border:0}footer{flex-wrap:wrap}footer span{border:0}}
+@media(max-width:520px){main{width:calc(100% - 28px)}.header-inner{width:calc(100% - 28px);flex-wrap:wrap}.brand{font-size:20px}.brand-icon{font-size:31px}.header-search{order:3;flex-basis:100%;max-width:none;margin:4px 0}.header-icons{margin-left:auto}nav{width:calc(100% - 28px);gap:22px;justify-content:flex-start}nav button{font-size:10px}.announcement{font-size:8px}.announcement span{display:none}.hero{margin:0 -14px 16px;height:300px;padding:30px 22px;background-image:linear-gradient(90deg,#020919 0%,#020919 58%,#020919cc 75%,#02091933 100%),url('/hero-phone-scene.png');background-position:center,68% center;background-size:100% 100%,cover}.hero>div:first-child{max-width:100%}.hero h1{font-size:33px}.hero p{font-size:12px;max-width:280px}.trust{font-size:8px;gap:5px;max-width:310px}.trust svg{width:11px}.trust span{margin:0}.issue-grid{gap:8px}.issue{padding:10px;gap:8px}.phone-grid{grid-template-columns:1fr}.phone-card h3{font-size:14px}.phone-card .price{font-size:18px!important}.phone-card small{font-size:10px}.phone-card .text-button{font-size:11px}.phone-card{gap:20px;padding:15px 22px}.agent-strip{padding:20px 16px;gap:18px}.agent-strip h2{font-size:18px}.agent-strip strong{font-size:10px}.agent-strip small{font-size:9px}.agent-strip svg{height:32px;width:32px;padding:5px}.agent-strip>div{gap:8px}footer{padding:18px;display:grid;grid-template-columns:1fr 1fr;gap:18px;font-size:9px}}
+
+
+.hero>div:first-child{z-index:2}
+.page-heading{position:relative;padding:44px 0 30px;max-width:760px}
+.page-heading::before{content:'';position:absolute;left:-18px;top:48px;width:3px;height:74px;border-radius:4px;background:linear-gradient(#1cc7ff,#8b36ef)}
+.page-heading h1{margin-top:12px}
+.empty{position:relative;overflow:hidden;min-height:250px;justify-content:center;background:radial-gradient(circle at 50% 25%,#153c6288,transparent 42%),linear-gradient(140deg,#121d33,#0a1223)}
+.empty::after{content:'';position:absolute;width:300px;height:300px;border:1px solid #23bdf633;border-radius:50%;box-shadow:0 0 70px #087eff22;pointer-events:none}
+.empty>*{position:relative;z-index:1}
+.empty svg{filter:drop-shadow(0 0 10px #16bffb99)}
+.empty h2{margin-bottom:8px}
+.three-columns .panel{box-shadow:inset 0 1px #ffffff08}
+.three-columns .panel h2{font-size:18px}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important}}
+
+main{padding-bottom:28px}
+section{margin-bottom:42px}
+.hero{margin-bottom:34px}
+.hero h1{margin-bottom:18px}
+.hero p{max-width:560px;margin:0 0 22px}
+.hero .actions{margin:22px 0}
+.section-title{margin-bottom:16px}
+.section-title h2{line-height:1.25}
+.caption{margin:10px 0 18px;line-height:1.6}
+.issue-grid{margin-top:0;gap:18px}
+.issue{min-height:74px;padding:18px}
+.issue span{line-height:1.45}
+.issue small{margin-top:7px}
+.phone-grid{gap:20px;margin-top:0}
+.phone-card{padding:18px;min-height:142px}
+.phone-card h3{margin:8px 0 12px}
+.phone-card p{margin:8px 0}
+.agent-strip{margin-top:10px}
+.header-icons{align-items:center}
+.theme-toggle{color:#ffd76a!important}
+
+[data-theme='light']{color-scheme:light}
+[data-theme='light'] body{background:#f3f7fc;color:#12213a}
+[data-theme='light'] header{background:#ffffffee;border-color:#dbe5f2}
+[data-theme='light'] .header-search{background:#f1f5fa;border-color:#cdd9e8}
+[data-theme='light'] .header-search input,[data-theme='light'] input,[data-theme='light'] select,[data-theme='light'] textarea{color:#12213a;background:#fff!important;border-color:#b9c9dc}
+[data-theme='light'] nav button,[data-theme='light'] .header-icons button{color:#33445d}
+[data-theme='light'] p,[data-theme='light'] small,[data-theme='light'] li,.light-theme{color:#52657e}
+[data-theme='light'] .panel,[data-theme='light'] .phone-card{background:linear-gradient(140deg,#ffffff,#edf3fa);border-color:#d1deec;box-shadow:0 10px 26px #7890aa20}
+[data-theme='light'] .issue{background:linear-gradient(110deg,#e9f5ff,#f0edff);border-color:#b8d5ee;color:#12213a}
+[data-theme='light'] .spec-summary{background:#edf3f9}
+[data-theme='light'] .secondary{background:#fff;color:#203451;border-color:#b9c9dc}
+[data-theme='light'] .notice{background:#e8f5fc;border-color:#b8d9e8;color:#284f65}
+[data-theme='light'] footer{background:#fff;border-color:#dbe5f2}
+
+@media(max-width:520px){
+  section{margin-bottom:32px}
+  .hero{margin-bottom:28px}
+  .hero h1{margin-bottom:14px}
+  .hero p{margin-bottom:18px}
+  .issue-grid{gap:12px}
+  .issue{min-height:82px;padding:14px 12px}
+  .phone-card{min-height:132px}
+}
+
+.announcement{overflow:hidden;white-space:nowrap}
+.marquee-track{display:flex;width:max-content;gap:72px;animation:revivai-marquee 24s linear infinite}
+.marquee-track span{display:inline-block}
+.announcement span{margin-left:0}
+@keyframes revivai-marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.hero h1,.hero p,.hero .actions,.hero .trust{animation:hero-copy-in .7s both}
+.hero p{animation-delay:.1s}.hero .actions{animation-delay:.18s}.hero .trust{animation-delay:.26s}
+@keyframes hero-copy-in{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.scroll-reveal{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease}
+.scroll-reveal.is-visible{opacity:1;transform:none}
+.scroll-reveal:nth-of-type(3){transition-delay:.08s}.scroll-reveal:nth-of-type(4){transition-delay:.16s}
+.issue,.phone-card{transition:transform .28s ease,box-shadow .28s ease,border-color .28s ease,background-color .28s ease}
+.issue:hover{transform:translateY(-5px) scale(1.01);box-shadow:0 16px 30px #007dff2e}
+.phone-card:hover{transform:translateY(-6px);box-shadow:0 18px 34px #007dff2e}
+.phone-card:hover .phone-art{transform:rotate(-4deg) scale(1.06)}
+.phone-art{transition:transform .35s ease}
+.header-icons button:hover{color:#25c4f5;transform:translateY(-2px) scale(1.08)}
+@media(max-width:520px){
+  .phone-grid{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 2px 14px;scrollbar-width:thin}
+  .phone-grid .phone-card{flex:0 0 min(86vw,340px);scroll-snap-align:start}
+  .marquee-track{gap:38px;animation-duration:20s}
+}
+@media(prefers-reduced-motion:reduce){
+  .marquee-track,.hero h1,.hero p,.hero .actions,.hero .trust{animation:none}
+  .scroll-reveal{opacity:1;transform:none;transition:none}
+}
+
+/* Clean reference treatment: full phone silhouettes, clear text, restrained detail. */
+body { -webkit-font-smoothing: antialiased; }
+button, input, select, textarea { font-family: inherit; }
+.hero {
+  height: auto;
+  aspect-ratio: 5 / 1;
+  min-height: 230px;
+  background-image: linear-gradient(90deg, #020919 0%, #020919 33%, #020919dd 50%, #02091922 76%), url('/hero-phone-scene.png');
+  background-size: 100% 100%, auto 100%;
+  background-position: center, right center;
+  padding-top: 24px;
+  padding-bottom: 24px;
+}
+.hero {
+  aspect-ratio: auto;
+  height: clamp(240px, 24vw, 300px);
+  margin-top: 0;
+  border-radius: 0 0 14px 14px;
+  border-bottom: 1px solid #1b4e7a;
+  box-shadow: 0 16px 35px #0005;
+}
+.hero > div:first-child {
+  max-width: 52%;
+}
+.hero::before, .hero::after { display: none; }
+.hero h1 { font-weight: 800; line-height: 1.04; letter-spacing: -.8px; }
+.hero p { line-height: 1.5; }
+.hero > div:first-child { max-width: 52%; }
+.section-title h2 { font-weight: 700; letter-spacing: -.4px; }
+.phone-card { gap: 14px; }
+.phone-card .grow > small:first-child { font-size: 11px; color: #bac8dd; }
+.phone-card h3 { font-size: 14px; line-height: 1.35; font-weight: 700; }
+.phone-card p { line-height: 1.45; font-size: 11px; }
+.phone-card .muted { display: block; font-size: 10px; line-height: 1.5; color: #acbbd2; }
+.phone-card .text-button { font-size: 11px; padding: 6px 12px; }
+.phone-art { overflow: hidden; }
+.issue { font-size: 13px; line-height: 1.35; }
+.issue small { font-size: 11px; line-height: 1.4; color: #b5c6e0; }
+.agent-strip strong { font-size: 13px; line-height: 1.4; }
+.agent-strip small { font-size: 11px; line-height: 1.4; }
+.agent-strip svg { filter: none; }
+.panel p, .panel li { line-height: 1.7; }
+@media (min-width: 801px) and (max-width: 1100px) {
+  .hero { min-height: 215px; }
+  .hero h1 { font-size: 30px; }
+  .hero .trust { font-size: 9px; gap: 5px; }
+  .phone-card { padding: 12px 10px; gap: 8px; }
+  .phone-card h3 { font-size: 12px; }
+  .phone-card .price { font-size: 15px !important; }
+  .issue { font-size: 12px; }
+  .issue small, .agent-strip small { font-size: 10px; }
+  .agent-strip strong { font-size: 12px; }
+}
+@media (max-width: 800px) {
+  .hero { aspect-ratio: auto; min-height: 280px; background-size: 100% 100%, auto 100%; background-position: center, right center; }
+  .hero > div:first-child { max-width: 65%; }
+  .trust { line-height: 1.8; }
+}
+@media (max-width: 520px) {
+  body { font-size: 14px; }
+  .header-inner { padding-top: 12px; }
+  nav { overflow-x: auto; scrollbar-width: none; }
+  nav::-webkit-scrollbar { display: none; }
+  nav button { flex: 0 0 auto; font-size: 11px; padding: 12px 2px 10px; }
+  .hero {
+    min-height: 390px;
+    align-items: flex-start;
+    background-image:
+      linear-gradient(180deg,#020919 0%,#020919 42%,#020919b8 66%,#02091922 100%),
+      url('/hero-phone-scene.png');
+    background-size: 100% 100%, auto 245px;
+    background-position: center, center bottom;
+    padding: 32px 22px 24px;
+  }
+  .hero > div:first-child { max-width: 100%; }
+  .hero h1 { font-size: clamp(30px, 9vw, 38px); line-height: 1; max-width: 330px; }
+  .hero p { font-size: 13px; line-height: 1.45; max-width: 315px; }
+  .hero .actions { gap: 8px; }
+  .hero .primary, .hero .secondary { font-size: 11px; padding: 10px 14px; }
+  .hero .trust { font-size: 10px; max-width: 320px; }
+  .issue-grid { margin-top: 14px; }
+  .phone-card { padding: 18px; }
+  .issue { padding: 12px 10px; font-size: 12px; }
+  .issue small { font-size: 10px; }
+  .agent-strip strong { font-size: 11px; }
+  .agent-strip small { font-size: 10px; }
+}

@@ -1,0 +1,14 @@
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { runAgents,recommend,safetyStop } from '../src/lib/agents';
+import { inputSchema,type CaseInput } from '../src/lib/contracts';
+const base:CaseInput={deviceId:'iphone-13-128',confirmed:true,symptoms:'My phone is not charging.',priority:'balanced',replace:true};
+delete process.env.GEMINI_API_KEY;
+test('device confirmation is required',()=>assert.equal(inputSchema.safeParse({...base,confirmed:false}).success,false));
+test('negative budget is rejected',()=>assert.equal(inputSchema.safeParse({...base,budget:-1}).success,false));
+test('combined symptoms do not hide battery hazards',()=>assert.equal(safetyStop('Screen cracked and battery swollen'),true));
+test('hard budgets are never relaxed',()=>{assert.equal(recommend({...base,budget:1}).length,0);for(const p of recommend({...base,budget:90000}))assert.ok(p.phone.price_lkr<=90000);});
+test('charging pauses for clarification before recommendations',async()=>{const r=await runAgents(base);assert.ok(r.question);assert.equal(r.recommendations.length,0);});
+test('hazardous cases bypass normal troubleshooting and shopping',async()=>{const r=await runAgents({...base,symptoms:'My screen is broken and battery is swollen.'});assert.ok(r.safetyStop);assert.equal(r.question,undefined);assert.equal(r.recommendations.length,0);assert.ok(r.steps.some(s=>s.includes('Do not open')));});
+test('successful accessory check does not recommend replacement',async()=>{const r=await runAgents({...base,answer:'yes'});assert.equal(r.question,undefined);assert.equal(r.recommendations.length,0);});
+test('unresolved charging continues through verification',async()=>{const r=await runAgents({...base,answer:'no',budget:90000});assert.equal(r.question,undefined);assert.ok(r.trace.some(s=>s.includes('rechecked')));assert.ok(r.recommendations.every(p=>p.phone.price_lkr<=90000&&!p.verified));assert.equal(r.cost.status,'unavailable');});
