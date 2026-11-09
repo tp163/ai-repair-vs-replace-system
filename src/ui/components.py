@@ -177,7 +177,7 @@ def recommended_phones(phones: list[dict] | None = None) -> str:
         themes = ["theme-a", "theme-b", "theme-c", "theme-d"]
         cards = "".join(f"""
 <a href="?page=phones" class="phone-card">
-  <div class="phone-thumb {themes[i % len(themes)]}"><div class="phone-bezel"><div class="phone-screen"></div></div></div>
+  <div class="phone-thumb {themes[i % len(themes)]}"><div class="phone-bezel"><div class="phone-camera"><i></i><i></i><i></i></div><div class="phone-screen"><span class="screen-shine"></span></div></div></div>
   <div class="phone-info">
     <p class="phone-price">{_e(fmt_lkr(p.get('price_lkr')))}</p>
     <p class="phone-name">{_e(p.get('brand', ''))} {_e(p.get('model', ''))}</p>
@@ -185,6 +185,7 @@ def recommended_phones(phones: list[dict] | None = None) -> str:
       {f'<span class="spec-chip">{_e(p.get("ram_gb"))} GB RAM</span>' if p.get('ram_gb') else ''}
       {f'<span class="spec-chip">{_e(p.get("storage_gb"))} GB storage</span>' if p.get('storage_gb') else ''}
     </div>
+    <span class="btn-view">View details {icon("arrow")}</span>
   </div>
 </a>""" for i, p in enumerate(phones[:4]))
         return f"""
@@ -203,7 +204,7 @@ def recommended_phones(phones: list[dict] | None = None) -> str:
     ]
     cards = "".join(f"""
 <a href="?page=diagnose" class="phone-card">
-  <div class="phone-thumb {p['theme']}"><div class="phone-bezel"><div class="phone-screen"></div></div></div>
+  <div class="phone-thumb {p['theme']}"><div class="phone-bezel"><div class="phone-camera"><i></i><i></i><i></i></div><div class="phone-screen"><span class="screen-shine"></span></div></div></div>
   <div class="phone-info">
     <p class="phone-price">{p['price']}</p>
     <div class="spec-chips">
@@ -310,7 +311,7 @@ def new_arrivals_full(phones: list[dict] | None = None) -> str:
         cards = "".join(f"""
 <article class="phone-card catalog-card">
   <div class="catalog-visual {themes[i % len(themes)]}">
-    <div class="phone-bezel"><div class="phone-screen"></div></div>
+    <div class="phone-bezel"><div class="phone-camera"><i></i><i></i><i></i></div><div class="phone-screen"><span class="screen-shine"></span></div></div>
   </div>
   <div class="phone-info">
     <p class="brand-tag">{_e(p.get('brand', ''))}{(' · ' + _e(p.get('variant', ''))) if p.get('variant') else ''}</p>
@@ -359,7 +360,7 @@ def new_arrivals_full(phones: list[dict] | None = None) -> str:
 <a href="?page=diagnose" class="phone-card" style="flex-direction:column;align-items:stretch;gap:0.5rem;">
   <div style="display:flex;justify-content:space-between;align-items:center;width:100%;">
     <div class="phone-thumb {themes[i % 4]}" style="min-height:auto;width:auto;">
-      <div class="phone-bezel" style="width:36px;height:68px;border-radius:8px;"><div class="phone-screen"></div></div>
+      <div class="phone-bezel" style="width:36px;height:68px;border-radius:8px;"><div class="phone-camera"><i></i><i></i><i></i></div><div class="phone-screen"><span class="screen-shine"></span></div></div>
     </div>
     <span style="font-size:0.65rem;font-weight:700;padding:0.18rem 0.45rem;border-radius:5px;
                  background:{p['bc']}22;color:{p['bc']};border:1px solid {p['bc']}44;">{p['badge']}</span>

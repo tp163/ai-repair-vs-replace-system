@@ -41,9 +41,12 @@ def inject_styles() -> None:
 ═══════════════════════════════════════════════ */
 html, body, .stApp {
   background:
+    linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px),
     radial-gradient(1200px 500px at 80% -10%, rgba(88,40,180,0.28), transparent 55%),
     radial-gradient(900px 420px at 10% 0%, rgba(20,70,180,0.22), transparent 50%),
     var(--navy) !important;
+  background-size: 56px 56px, 56px 56px, auto, auto, auto !important;
   font-family: var(--font-body) !important;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
@@ -228,8 +231,10 @@ h1,h2,h3 { font-family: var(--font-display) !important; }
   overflow: hidden;
   display: flex;
   align-items: center;
-  min-height: 480px;
+  min-height: 430px;
   background: var(--navy-2);
+  border-bottom: 1px solid rgba(80,140,255,0.18);
+  box-shadow: inset 0 -70px 100px rgba(4,11,24,0.42);
 }
 
 /* dark gradient overlay — left side dark for text, right fades to image */
@@ -247,7 +252,7 @@ h1,h2,h3 { font-family: var(--font-display) !important; }
 }
 
 .hero-left {
-  padding: 3.6rem 2.75rem 3.2rem;
+  padding: 3.1rem 2.75rem 2.8rem;
   position: relative;
   z-index: 2;
   max-width: 700px;
@@ -413,7 +418,7 @@ h1,h2,h3 { font-family: var(--font-display) !important; }
   color: inherit !important;
   transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
   box-shadow: 0 8px 24px rgba(0,0,0,0.22);
-  min-height: 132px;
+  min-height: 148px;
 }
 .phone-card:hover {
   border-color: rgba(80,170,255,0.5);
@@ -428,18 +433,32 @@ h1,h2,h3 { font-family: var(--font-display) !important; }
   display: flex; align-items: center; justify-content: center;
 }
 .phone-bezel {
+  position: relative;
   width: 46px; height: 86px;
   border-radius: 10px;
-  background: #0a1020;
-  border: 2px solid rgba(148,163,184,0.35);
-  box-shadow: 0 10px 18px rgba(0,0,0,0.4), 0 0 14px rgba(59,158,255,0.12);
-  padding: 3px;
+  background: linear-gradient(145deg, #253553 0%, #080e1d 34%, #111a2d 100%);
+  border: 1px solid rgba(203,213,225,0.5);
+  box-shadow: 8px 14px 22px rgba(0,0,0,0.48), inset 1px 1px 1px rgba(255,255,255,0.22), 0 0 18px rgba(59,158,255,0.14);
+  padding: 4px;
+  transform: perspective(180px) rotateY(-7deg);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
-.phone-screen { width: 100%; height: 100%; border-radius: 6px; }
+.phone-card:hover .phone-bezel { transform: perspective(180px) rotateY(-2deg) translateY(-2px); box-shadow: 10px 18px 28px rgba(0,0,0,0.5), 0 0 22px rgba(59,158,255,0.28); }
+.phone-screen { position:relative; width: 100%; height: 100%; border-radius: 7px; overflow:hidden; }
+.phone-screen::before { content:""; position:absolute; left:50%; top:4px; transform:translateX(-50%); width:15px; height:3px; border-radius:8px; background:rgba(3,8,18,0.78); box-shadow:0 0 0 1px rgba(255,255,255,0.1); }
+.phone-screen::after { content:""; position:absolute; inset:0; background:linear-gradient(112deg, rgba(255,255,255,0.24), transparent 26%, transparent 68%, rgba(255,255,255,0.06)); pointer-events:none; }
+.screen-shine { position:absolute; width:45px; height:120px; top:-25px; left:-25px; transform:rotate(24deg); background:rgba(255,255,255,0.12); filter:blur(8px); }
+.phone-camera { position:absolute; z-index:2; top:7px; left:6px; width:17px; height:22px; border-radius:6px; background:rgba(10,17,31,0.74); border:1px solid rgba(255,255,255,0.12); padding:2px; display:grid; grid-template-columns:repeat(2, 1fr); gap:2px; }
+.phone-camera i { display:block; width:5px; height:5px; border-radius:50%; background:radial-gradient(circle at 35% 30%, #b8d7ff 0 10%, #243d6a 28%, #050a13 72%); border:1px solid rgba(147,197,253,0.35); }
+.phone-camera i:last-child { grid-column:1 / span 2; justify-self:center; }
 .theme-a .phone-screen { background: radial-gradient(circle at 32% 28%, #e9d5ff, #7c3aed 48%, #1e1b4b); }
 .theme-b .phone-screen { background: linear-gradient(160deg, #bfdbfe, #64748b 42%, #1e293b); }
 .theme-c .phone-screen { background: radial-gradient(circle at 40% 22%, #6ee7b7, #047857 55%, #022c22); }
 .theme-d .phone-screen { background: radial-gradient(circle at 38% 28%, #f5d0fe, #a21caf 48%, #3b0764); }
+.theme-a .phone-bezel { border-color:rgba(196,181,253,0.7); }
+.theme-b .phone-bezel { border-color:rgba(191,219,254,0.7); }
+.theme-c .phone-bezel { border-color:rgba(110,231,183,0.65); }
+.theme-d .phone-bezel { border-color:rgba(240,171,252,0.7); }
 .phone-info { flex: 1; min-width: 0; }
 .phone-price {
   font-family: var(--font-display);
@@ -489,6 +508,8 @@ h1,h2,h3 { font-family: var(--font-display) !important; }
   box-shadow: 0 4px 14px rgba(37,99,235,0.35);
   transition: opacity 0.15s, transform 0.15s;
 }
+.phone-card .btn-view { margin-top: 0.1rem; }
+.btn-view .ico { width: 0.9rem; height: 0.9rem; }
 .btn-view:hover { opacity: 0.92; color: #fff !important; transform: translateY(-1px); }
 
 /* ═══════════════════════════════════════════════
@@ -588,13 +609,13 @@ h1,h2,h3 { font-family: var(--font-display) !important; }
    GLASS CARD  (generic)
 ═══════════════════════════════════════════════ */
 .glass-card {
-  background: linear-gradient(180deg, rgba(12,24,52,0.88), rgba(6,14,34,0.92));
+  background: linear-gradient(145deg, rgba(15,31,66,0.9), rgba(5,13,31,0.94));
   backdrop-filter: blur(14px);
-  border: 1px solid rgba(80,150,255,0.2);
+  border: 1px solid rgba(93,157,255,0.25);
   border-radius: 16px;
   padding: 1.25rem 1.35rem;
   margin-bottom: 1rem;
-  box-shadow: 0 10px 28px rgba(0,0,0,0.22);
+  box-shadow: 0 14px 34px rgba(0,0,0,0.24), inset 0 1px 0 rgba(255,255,255,0.035);
 }
 
 /* ═══════════════════════════════════════════════
@@ -627,6 +648,12 @@ div[data-testid="stNumberInput"] input {
   border-radius: 8px !important;
   color: #e2eaf7 !important;
 }
+div[data-testid="stTextInput"] input:focus,
+div[data-testid="stNumberInput"] input:focus,
+div[data-testid="stTextArea"] textarea:focus {
+  border-color: rgba(59,158,255,0.78) !important;
+  box-shadow: 0 0 0 3px rgba(59,158,255,0.12), 0 0 18px rgba(59,158,255,0.08) !important;
+}
 div[data-testid="stTextArea"] textarea {
   background: rgba(6,18,42,0.9) !important;
   border: 1px solid rgba(30,80,180,0.35) !important;
@@ -639,10 +666,20 @@ div[data-testid="stSelectbox"] > div[data-baseweb="select"] > div {
   border-radius: 8px !important;
   color: #e2eaf7 !important;
 }
+div[data-testid="stFileUploader"] {
+  background: rgba(6,18,42,0.58) !important;
+  border: 1px dashed rgba(93,157,255,0.38) !important;
+  border-radius: 12px !important;
+  padding: 0.25rem 0.5rem !important;
+}
+div[data-testid="stFileUploader"] section {
+  background: transparent !important;
+  border: 0 !important;
+}
 div[data-testid="stButton"] > button[kind="primary"] {
   background: linear-gradient(135deg,#1a6fff 0%,#7c3aed 100%) !important;
   border: none !important; font-weight: 700 !important;
-  border-radius: 8px !important; padding: 0.65rem 1.2rem !important;
+  border-radius: 999px !important; padding: 0.72rem 1.2rem !important;
   box-shadow: 0 4px 20px rgba(26,100,255,0.35);
   transition: transform 0.15s, box-shadow 0.15s;
 }
