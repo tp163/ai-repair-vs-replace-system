@@ -52,7 +52,8 @@ _RAW_RULES: dict[str, list[tuple[str, int]]] = {
         (r"\bshatter\w*", 3),
         (r"\bbroken (?:screen|display|glass)\b", 3),
         (r"\b(?:screen|display|glass)\b.{0,20}\b(?:broken|smashed|damaged)\b", 2),
-        (r"\b(?:lines|dead pixels?|black spots?)\b.{0,15}\b(?:screen|display)\b", 2),
+        (r"\b(?:lines|dead pixels?|black spots?)\b.{0,35}\b(?:screen|display)\b|\b(?:screen|display)\b.{0,35}\b(?:lines|dead pixels?|black spots?)\b", 2),
+        (r"\b(?:flicker\w*|ink blot|bleeding)\b.{0,35}\b(?:screen|display|oled)\b|\b(?:screen|display|oled)\b.{0,35}\b(?:flicker\w*|bleeding)\b", 2),
         (r"\bdisplay damage\b", 2),
         (r"\b(?:dropped|fell|drop)\b", 1),
     ],
@@ -69,7 +70,7 @@ _RAW_RULES: dict[str, list[tuple[str, int]]] = {
         (r"\b(?:won'?t|doesn'?t|does not|will not|not|stopped|stops?)\s+charg(?:e|ing)\b", 3),
         (r"\b(?:charging port|usb[- ]?c|lightning|cable|charger|port)\b", 2),
         (r"\bloose\b.{0,15}\b(?:cable|port|connector)\b", 2),
-        (r"\bslow(?:ly)? charg\w*", 3),
+        (r"\bcharg(?:e|es|ed|ing|er)\b.{0,15}\b(?:slow(?:ly)?|takes? forever)\b|\bslow(?:ly)? charg\w*", 3),
     ],
     "overheating": [
         (r"\boverheat\w*", 3),

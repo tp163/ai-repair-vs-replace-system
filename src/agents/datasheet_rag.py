@@ -44,8 +44,13 @@ def run(state: AgentState, llm: Any = None) -> dict[str, Any]:
                     "section": chunk.get("section", ""),
                     "chunk_id": chunk.get("chunk_id", ""),
                     "score": chunk.get("score", 0.0),
-                    "citation": chunk.get("citation", ""),
-                    "date_verified": chunk.get("date_verified", ""),
+                    "citation": source.get("citation", chunk.get("citation", "")),
+                    "date_verified": source.get("date_verified", chunk.get("date_verified", "")),
+                    "verification_status": source.get(
+                        "verification_status",
+                        chunk.get("source_verification_status", "linked_unverified"),
+                    ),
+                    "source_scope": source.get("scope", "section"),
                     "component": chunk.get("component", ""),
                 }
                 for source in chunk.get("sources", [{
@@ -67,10 +72,14 @@ def run(state: AgentState, llm: Any = None) -> dict[str, Any]:
         "details": {
             "device": f"{brand} {model}".strip(),
             "identity_confirmed": identity_confirmed,
-            "query": fault,
+            "query": f"{fault} {fault_category}".strip(),
             "citations": [c.get("citation", "") for c in retrieved],
             "source_urls": [c.get("source_url", "") for c in retrieved],
             "chunk_ids": [c.get("chunk_id", "") for c in retrieved],
+            "source_verification_status": sorted({
+                c.get("source_verification_status", "linked_unverified")
+                for c in retrieved
+            }),
         },
     }
 

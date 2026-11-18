@@ -18,6 +18,12 @@ COMPONENT_KEYWORDS = {
     "thermal": ("thermal", "cooling", "vapor chamber"),
 }
 
+# A URL is preserved as provenance, but the application has not checked that
+# each individual claim is supported by that page. Keep this distinction
+# explicit in every retrieved citation until the corpus has been audited.
+SOURCE_VERIFICATION_STATUS = "linked_unverified"
+MAX_PASSAGE_CHARS = 700
+
 
 def _slugify(text: str) -> str:
     cleaned = re.sub(r"[^a-zA-Z0-9]+", "_", text.strip().lower())
@@ -43,6 +49,59 @@ def _safe_source_url(value: str) -> str:
     except ValueError:
         return ""
     return value if parsed.scheme == "https" and parsed.netloc else ""
+
+
+def _split_passages(text: str, max_chars: int = MAX_PASSAGE_CHARS) -> list[str]:
+    """Split section text into small, readable passages without losing lines."""
+    passages: list[str] = []
+    current: list[str] = []
+    current_len = 0
+
+    def flush() -> None:
+        nonlocal current, current_len
+        passage = "\n".join(current).strip()
+        if passage:
+            passages.append(passage)
+        current = []
+        current_len = 0
+
+    for raw_line in text.splitlines():
+        line = raw_line.strip()
+        if not line:
+            flush()
+            continue
+        # Each Markdown list item is usually one independently sourced fact.
+        # Keep it as its own passage instead of bundling unrelated claims.
+        if line.startswith(("- ", "* ")):
+            flush()
+        # Long single-line claims are split at word boundaries.
+        pieces: list[str] = []
+        while len(line) > max_chars:
+            split_at = line.rfind(" ", 0, max_chars + 1)
+            if split_at < 1:
+                split_at = max_chars
+            pieces.append(line[:split_at].strip())
+            line = line[split_at:].strip()
+        if line:
+            pieces.append(line)
+
+        for piece in pieces:
+            if current and current_len + len(piece) + 1 > max_chars:
+                flush()
+            current.append(piece)
+            current_len += len(piece) + (1 if current_len else 0)
+    flush()
+    return passages
+
+
+def _source_citation(brand: str, model: str, section: str, source: dict[str, str], date_verified: str) -> str:
+    parts = [f"{brand} {model}".strip(), section]
+    if source.get("doc"):
+        parts.append(source["doc"])
+    citation = " | ".join(part for part in parts if part)
+    if date_verified:
+        citation += f" (dataset date: {date_verified})"
+    return citation
 
 
 def parse_datasheet(file_path: Path) -> list[dict[str, Any]]:
@@ -88,21 +147,30 @@ def parse_datasheet(file_path: Path) -> list[dict[str, Any]]:
     # Intro section
     intro_text = sections[0].strip()
     if intro_text:
-        chunks.append({
-            "chunk_id": f"{_slugify(model or file_path.stem)}#overview",
-            "brand": brand,
-            "model": model,
-            "variant": variant,
-            "model_identifiers": model_ids,
-            "section": "Device Overview & Specifications",
-            "component": "overview",
-            "text": intro_text,
-            "source_title": source_title or "Official Service Manual",
+        overview_sources = [{
+            "doc": source_title or "Source not specified",
             "source_url": source_url,
-            "date_verified": date_verified,
-            "file_name": file_path.name,
-            "ip_rating": ip_rating,
-        })
+            "verification_status": SOURCE_VERIFICATION_STATUS,
+            "scope": "document",
+        }]
+        for passage_index, passage in enumerate(_split_passages(intro_text), start=1):
+            chunks.append({
+                "chunk_id": f"{_slugify(model or file_path.stem)}#overview-p{passage_index:02d}",
+                "brand": brand,
+                "model": model,
+                "variant": variant,
+                "model_identifiers": model_ids,
+                "section": "Device Overview & Specifications",
+                "component": "overview",
+                "text": passage,
+                "source_title": source_title or "Official Service Manual",
+                "source_url": source_url,
+                "sources": overview_sources,
+                "source_verification_status": SOURCE_VERIFICATION_STATUS,
+                "date_verified": date_verified,
+                "file_name": file_path.name,
+                "ip_rating": ip_rating,
+            })
 
     # Numbered component sections
     for sec in sections[1:]:
@@ -132,27 +200,41 @@ def parse_datasheet(file_path: Path) -> list[dict[str, Any]]:
             continue
         if not section_sources:
             section_sources = [{"doc": source_title, "source_url": source_url}]
+        section_sources = [
+            {**source, "verification_status": SOURCE_VERIFICATION_STATUS, "scope": "section"}
+            for source in section_sources
+        ]
         primary_source = section_sources[0]
 
         component = _detect_component(section_title, section_body)
-        chunk_id = f"{_slugify(model or file_path.stem)}#{_slugify(section_title)}"
+        base_chunk_id = f"{_slugify(model or file_path.stem)}#{_slugify(section_title)}"
 
-        chunks.append({
-            "chunk_id": chunk_id,
-            "brand": brand,
-            "model": model,
-            "variant": variant,
-            "model_identifiers": model_ids,
-            "section": section_title,
-            "component": component,
-            "text": section_body,
-            "source_title": primary_source["doc"],
-            "source_url": primary_source["source_url"],
-            "sources": section_sources,
-            "date_verified": date_verified,
-            "file_name": file_path.name,
-            "ip_rating": ip_rating,
-        })
+        for passage_index, passage in enumerate(_split_passages(section_body), start=1):
+            passage_sources = [
+                {
+                    **source,
+                    "citation": _source_citation(brand, model, section_title, source, date_verified),
+                    "date_verified": date_verified,
+                }
+                for source in section_sources
+            ]
+            chunks.append({
+                "chunk_id": f"{base_chunk_id}#p{passage_index:02d}",
+                "brand": brand,
+                "model": model,
+                "variant": variant,
+                "model_identifiers": model_ids,
+                "section": section_title,
+                "component": component,
+                "text": passage,
+                "source_title": primary_source["doc"],
+                "source_url": primary_source["source_url"],
+                "sources": passage_sources,
+                "date_verified": date_verified,
+                "source_verification_status": SOURCE_VERIFICATION_STATUS,
+                "file_name": file_path.name,
+                "ip_rating": ip_rating,
+            })
 
     return chunks
 

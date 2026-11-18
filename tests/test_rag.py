@@ -13,7 +13,7 @@ Verifies:
 from pathlib import Path
 import pytest
 
-from src.rag.chunker import load_all_chunks, parse_datasheet
+from src.rag.chunker import _split_passages, load_all_chunks, parse_datasheet
 from src.rag.retriever import LexicalTFIDFVectorStore, query_datasheet_rag
 from src.agents import datasheet_rag, troubleshooting, decision, explanation
 
@@ -136,6 +136,88 @@ def test_exact_model_matching_rejects_variants_like_mini_or_5g(datasheets_dir: P
     # Documented base models succeed
     assert len(query_datasheet_rag("Apple", "iPhone 13", "battery", datasheets_dir=datasheets_dir)) > 0
     assert len(query_datasheet_rag("Samsung", "Galaxy A51", "battery", datasheets_dir=datasheets_dir)) > 0
+
+
+def test_unrelated_query_does_not_match_only_because_component_matches():
+    chunks = [{
+        "chunk_id": "test#charging",
+        "brand": "Acme",
+        "model": "Phone One",
+        "section": "Charging & Port Architecture",
+        "component": "charging",
+        "text": "USB-C port is mounted on a replaceable lower board.",
+    }]
+    store = LexicalTFIDFVectorStore(chunks)
+
+    assert store.search(
+        "quantum entanglement", brand="Acme", model="Phone One", component="charging"
+    ) == []
+
+
+def test_retrieval_keeps_per_source_citations_and_unverified_status():
+    chunks = [{
+        "chunk_id": "test#battery#p01",
+        "brand": "Acme",
+        "model": "Phone One",
+        "section": "Battery",
+        "component": "battery",
+        "text": "Battery capacity is 4000 mAh.",
+        "source_title": "Primary source",
+        "source_url": "https://example.com/primary",
+        "date_verified": "2026-11-05",
+        "source_verification_status": "linked_unverified",
+        "sources": [
+            {"doc": "Primary source", "source_url": "https://example.com/primary",
+             "citation": "Acme Phone One — Battery — Primary source (dataset date: 2026-11-05)"},
+            {"doc": "Second source", "source_url": "https://example.com/secondary",
+             "citation": "Acme Phone One — Battery — Second source (dataset date: 2026-11-05)"},
+        ],
+    }]
+    store = LexicalTFIDFVectorStore(chunks)
+
+    result = store.search("battery capacity 4000 mAh", "Acme", "Phone One", "battery")[0]
+
+    assert [source["doc"] for source in result["sources"]] == ["Primary source", "Second source"]
+    assert "Second source" in result["sources"][1]["citation"]
+    assert result["source_verification_status"] == "linked_unverified"
+
+
+def test_chunker_splits_long_sections_into_passages(datasheets_dir: Path):
+    chunks = load_all_chunks(datasheets_dir)
+
+    assert _split_passages("- First claim.\n- Second claim.") == ["- First claim.", "- Second claim."]
+    assert any("#p" in chunk["chunk_id"] for chunk in chunks)
+    assert all(len(chunk["text"]) <= 700 for chunk in chunks)
+
+
+def test_chunker_splits_long_overview_into_passages(tmp_path: Path):
+    datasheet = tmp_path / "acme_phone.md"
+    datasheet.write_text(
+        "# Acme Phone\n\n**Brand:** Acme\n**Model:** Phone One\n\n"
+        + ("Overview detail. " * 60),
+        encoding="utf-8",
+    )
+
+    overview_chunks = [
+        chunk for chunk in parse_datasheet(datasheet)
+        if chunk["component"] == "overview"
+    ]
+
+    assert len(overview_chunks) > 1
+    assert all(len(chunk["text"]) <= 700 for chunk in overview_chunks)
+
+
+def test_corpus_signature_changes_when_markdown_changes(tmp_path: Path):
+    from src.rag.retriever import _corpus_signature
+
+    corpus = tmp_path / "datasheets"
+    corpus.mkdir()
+    source = corpus / "phone.md"
+    source.write_text("first", encoding="utf-8")
+    first = _corpus_signature(corpus)
+    source.write_text("second and longer", encoding="utf-8")
+
+    assert _corpus_signature(corpus) != first
 
 
 # ---------------------------------------------------------------------------

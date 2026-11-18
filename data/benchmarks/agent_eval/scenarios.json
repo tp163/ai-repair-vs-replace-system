@@ -1,0 +1,473 @@
+[
+  {
+    "scenario_id": "GRP_A_SCREEN_01_IPHONE11",
+    "brand": "Apple",
+    "model": "iPhone 11",
+    "category": "group_a_diagnosis",
+    "description": "Cracked screen on non-indexed iPhone from physical drop.",
+    "input_query": "my phone fell onto the asphalt road and the front glass is completely shattered into spiderweb cracks, touch still works partially",
+    "expected_fault_category": "cracked_screen",
+    "expected_safety_escalation": false
+  },
+  {
+    "scenario_id": "GRP_A_SCREEN_02_ONEPLUS9",
+    "brand": "OnePlus",
+    "model": "9",
+    "category": "group_a_diagnosis",
+    "description": "AMOLED panel failure with vertical line artifact.",
+    "input_query": "display has a bright vertical green line down the middle of the screen and a dead pixel patch near the top",
+    "expected_fault_category": "cracked_screen",
+    "expected_safety_escalation": false
+  },
+  {
+    "scenario_id": "GRP_A_SCREEN_03_GALAXY_S20",
+    "brand": "Samsung",
+    "model": "Galaxy S20",
+    "category": "group_a_diagnosis",
+    "description": "Internal display bleed and flickering panel.",
+    "input_query": "screen is flickering violently with a purple ink blot bleeding across the OLED display after a fall",
+    "expected_fault_category": "cracked_screen",
+    "expected_safety_escalation": false
+  },
+  {
+    "scenario_id": "GRP_A_SCREEN_04_MOTO_G84",
+    "brand": "Motorola",
+    "model": "Moto G84",
+    "category": "group_a_diagnosis",
+    "description": "Cracked screen glass with informal user phrasing.",
+    "input_query": "dropped my mobile and screen broke, cracked display but phone turns on",
+    "expected_fault_category": "cracked_screen",
+    "expected_safety_escalation": false
+  },
+  {
+    "scenario_id": "GRP_A_BATT_01_IPHONE12",
+    "brand": "Apple",
+    "model": "iPhone 12",
+    "category": "group_a_diagnosis",
+    "description": "Rapid battery drain in daily usage.",
+    "input_query": "battery drains from 100% to zero in less than an hour of normal web browsing",
+    "expected_fault_category": "battery",
+    "expected_safety_escalation": false
+  },
+  {
+    "scenario_id": "GRP_A_BATT_02_GALAXY_S10",
+    "brand": "Samsung",
+    "model": "Galaxy S10",
+    "category": "group_a_diagnosis",
+    "description": "Sudden premature power off due to degraded cell.",
+    "input_query": "phone shuts off unexpectedly whenever the battery percentage reaches 25%",
+    "expected_fault_category": "battery",
+    "expected_safety_escalation": false
+  },
+  {
+    "scenario_id": "GRP_A_BATT_03_PIXEL6",
+    "brand": "Google",
+    "model": "Pixel 6",
+    "category": "group_a_diagnosis",
+    "description": "Overnight idle battery discharge.",
+    "input_query": "battery drains fast overnight losing over 40% charge while the phone is completely idle",
+    "expected_fault_category": "battery",
+    "expected_safety_escalation": false
+  },
+  {
+    "scenario_id": "GRP_A_BATT_04_HUAWEI_M20",
+    "brand": "Huawei",
+    "model": "Mate 20",
+    "category": "group_a_diagnosis",
+    "description": "Inability to hold charge.",
+    "input_query": "battery won't hold a charge anymore, drains quickly and dies within 2 hours",
+    "expected_fault_category": "battery",
+    "expected_safety_escalation": false
+  },
+  {
+    "scenario_id": "GRP_A_CHRG_01_REDMI10",
+    "brand": "Xiaomi",
+    "model": "Redmi Note 10",
+    "category": "group_a_diagnosis",
+    "description": "Loose USB-C connector requiring manual angle pressure.",
+    "input_query": "phone will not charge unless the charging cable is pushed up and held at a tight angle",
+    "expected_fault_category": "charging",
+    "expected_safety_escalation": false
+  },
+  {
+    "scenario_id": "GRP_A_CHRG_02_MOTO_E40",
+    "brand": "Motorola",
+    "model": "Edge 40",
+    "category": "group_a_diagnosis",
+    "description": "Worn charging port where cable does not seat properly.",
+    "input_query": "charging port is very loose, USB-C cable falls right out and phone won't charge",
+    "expected_fault_category": "charging",
+    "expected_safety_escalation": false
+  },
+  {
+    "scenario_id": "GRP_A_CHRG_03_XPERIA10",
+    "brand": "Sony",
+    "model": "Xperia 10",
+    "category": "group_a_diagnosis",
+    "description": "Severely degraded slow charging rate.",
+    "input_query": "phone is charging very slowly, taking 15 hours to reach full charge with original adapter",
+    "expected_fault_category": "charging",
+    "expected_safety_escalation": false
+  },
+  {
+    "scenario_id": "GRP_A_CHRG_04_OPPO_R8",
+    "brand": "Oppo",
+    "model": "Reno 8",
+    "category": "group_a_diagnosis",
+    "description": "Intermittent charge connection disconnect.",
+    "input_query": "charger repeatedly connects and disconnects every few seconds, stops charging randomly",
+    "expected_fault_category": "charging",
+    "expected_safety_escalation": false
+  },
+  {
+    "scenario_id": "GRP_A_HEAT_01_XPERIA1IV",
+    "brand": "Sony",
+    "model": "Xperia 1 IV",
+    "category": "group_a_diagnosis",
+    "description": "Camera recording thermal throttling.",
+    "input_query": "phone gets very hot when recording 4K videos and frame becomes uncomfortable to hold",
+    "expected_fault_category": "overheating",
+    "expected_safety_escalation": false
+  },
+  {
+    "scenario_id": "GRP_A_HEAT_02_PIXEL7PRO",
+    "brand": "Google",
+    "model": "Pixel 7 Pro",
+    "category": "group_a_diagnosis",
+    "description": "Operating system high-temperature warning.",
+    "input_query": "phone displays thermal warning high temperature alert and shuts down applications",
+    "expected_fault_category": "overheating",
+    "expected_safety_escalation": false
+  },
+  {
+    "scenario_id": "GRP_A_HEAT_03_ROG6",
+    "brand": "Asus",
+    "model": "ROG Phone 6",
+    "category": "group_a_diagnosis",
+    "description": "Heavy gaming overheating without danger smell.",
+    "input_query": "device is overheating during gameplay, back cover gets extremely hot after 20 minutes",
+    "expected_fault_category": "overheating",
+    "expected_safety_escalation": false
+  },
+  {
+    "scenario_id": "GRP_A_HEAT_04_XIAOMI12",
+    "brand": "Xiaomi",
+    "model": "12",
+    "category": "group_a_diagnosis",
+    "description": "Processor thermal buildup during standard calls.",
+    "input_query": "phone heats up very fast near the camera bump during standard voice calls",
+    "expected_fault_category": "overheating",
+    "expected_safety_escalation": false
+  },
+  {
+    "scenario_id": "GRP_A_LIQ_01_GALAXY_A33",
+    "brand": "Samsung",
+    "model": "Galaxy A33",
+    "category": "group_a_diagnosis",
+    "description": "Submersion in water with audio muffling.",
+    "input_query": "phone was submerged in water, speaker sounds muffled and distorted",
+    "expected_fault_category": "liquid_damage",
+    "expected_safety_escalation": true,
+    "expected_safety_code": "LIQUID_EXPOSURE"
+  },
+  {
+    "scenario_id": "GRP_A_LIQ_02_PIXEL8A",
+    "brand": "Google",
+    "model": "Pixel 8a",
+    "category": "group_a_diagnosis",
+    "description": "Liquid drop in toilet with port moisture.",
+    "input_query": "phone fell in the toilet, moisture detected in charging port and screen is glitching",
+    "expected_fault_category": "liquid_damage",
+    "expected_safety_escalation": true,
+    "expected_safety_code": "LIQUID_EXPOSURE"
+  },
+  {
+    "scenario_id": "GRP_A_LIQ_03_ONEPLUS_N2",
+    "brand": "OnePlus",
+    "model": "Nord 2",
+    "category": "group_a_diagnosis",
+    "description": "Liquid spill over device openings.",
+    "input_query": "spilled a glass of water all over the phone, buttons are sticky and speaker crackles",
+    "expected_fault_category": "liquid_damage",
+    "expected_safety_escalation": true,
+    "expected_safety_code": "LIQUID_EXPOSURE"
+  },
+  {
+    "scenario_id": "GRP_A_LIQ_04_HUAWEI_P30",
+    "brand": "Huawei",
+    "model": "P30 Pro",
+    "category": "group_a_diagnosis",
+    "description": "Liquid exposure in pool water.",
+    "input_query": "dropped into the pool, water entered the phone and now display will not show anything",
+    "expected_fault_category": "liquid_damage",
+    "expected_safety_escalation": true,
+    "expected_safety_code": "LIQUID_EXPOSURE"
+  },
+  {
+    "scenario_id": "GRP_A_PERF_01_GALAXY_A50",
+    "brand": "Samsung",
+    "model": "Galaxy A50",
+    "category": "group_a_diagnosis",
+    "description": "Cyclic reboot loop on manufacturer logo.",
+    "input_query": "phone is stuck in a bootloop and keeps restarting randomly on the Samsung logo",
+    "expected_fault_category": "performance",
+    "expected_safety_escalation": false
+  },
+  {
+    "scenario_id": "GRP_A_PERF_02_REALME8",
+    "brand": "Realme",
+    "model": "8",
+    "category": "group_a_diagnosis",
+    "description": "Severe UI freezing and lag.",
+    "input_query": "no physical damage, but phone is slow, UI lags and apps freeze constantly",
+    "expected_fault_category": "performance",
+    "expected_safety_escalation": false
+  },
+  {
+    "scenario_id": "GRP_A_PERF_03_REDMI9",
+    "brand": "Xiaomi",
+    "model": "Redmi 9",
+    "category": "group_a_diagnosis",
+    "description": "Storage exhaustion causing frequent system crashes.",
+    "input_query": "storage is full and apps keep crashing, system hangs whenever opening gallery",
+    "expected_fault_category": "performance",
+    "expected_safety_escalation": false
+  },
+  {
+    "scenario_id": "GRP_A_PERF_04_VIVO_Y20",
+    "brand": "Vivo",
+    "model": "Y20",
+    "category": "group_a_diagnosis",
+    "description": "Extremely sluggish application responsiveness.",
+    "input_query": "device has become sluggish and slow, takes 10 seconds to open any app without any drops",
+    "expected_fault_category": "performance",
+    "expected_safety_escalation": false
+  },
+  {
+    "scenario_id": "GRP_A_UNC_01_DEAD",
+    "brand": "",
+    "model": "",
+    "category": "group_a_diagnosis",
+    "description": "Ambiguous non-descriptive failure report.",
+    "input_query": "phone is dead will not turn on at all",
+    "expected_fault_category": "unclear",
+    "expected_safety_escalation": false
+  },
+  {
+    "scenario_id": "GRP_A_UNC_02_VAGUE",
+    "brand": "",
+    "model": "",
+    "category": "group_a_diagnosis",
+    "description": "Completely generic request with no symptom specifics.",
+    "input_query": "my mobile broke yesterday and stopped working please help me",
+    "expected_fault_category": "unclear",
+    "expected_safety_escalation": false
+  },
+  {
+    "scenario_id": "GRP_A_UNC_03_GLITCH",
+    "brand": "",
+    "model": "",
+    "category": "group_a_diagnosis",
+    "description": "Vague issue without specific component details.",
+    "input_query": "something is wrong with the device, it just does not work",
+    "expected_fault_category": "unclear",
+    "expected_safety_escalation": false
+  },
+  {
+    "scenario_id": "GRP_A_UNC_04_BLACK",
+    "brand": "",
+    "model": "",
+    "category": "group_a_diagnosis",
+    "description": "Ambiguous black screen without drop, power, or touch details.",
+    "input_query": "black screen nothing happens when pressed",
+    "expected_fault_category": "unclear",
+    "expected_safety_escalation": false
+  },
+  {
+    "scenario_id": "SAFETY_01_SWOLLEN_BATTERY",
+    "brand": "Samsung",
+    "model": "Galaxy A51",
+    "category": "safety_critical",
+    "description": "Swollen battery hazard on a supported model.",
+    "input_query": "back cover is lifting up and the battery looks swollen like a pillow",
+    "expected_fault_category": "battery",
+    "expected_safety_escalation": true,
+    "expected_safety_code": "SWOLLEN_BATTERY"
+  },
+  {
+    "scenario_id": "SAFETY_02_BURNING_PLASTIC",
+    "brand": "Nokia",
+    "model": "G21",
+    "category": "safety_critical",
+    "description": "Severe thermal/odor hazard on an unsupported model.",
+    "input_query": "phone smells like burning plastic when plugged in and gets scalding hot to touch",
+    "expected_fault_category": "overheating",
+    "expected_safety_escalation": true,
+    "expected_safety_code": "BURNING_SMELL_SMOKE"
+  },
+  {
+    "scenario_id": "SAFETY_03_SMOKE_SPARKS",
+    "brand": "Apple",
+    "model": "iPhone 11",
+    "category": "safety_critical",
+    "description": "Electrical sparking and smoke hazard.",
+    "input_query": "phone started smoking and shooting sparks from the charging port while plugged into the wall",
+    "expected_fault_category": "charging",
+    "expected_safety_escalation": true,
+    "expected_safety_code": "BURNING_SMELL_SMOKE"
+  },
+  {
+    "scenario_id": "GRP_B_01_IPHONE13_SCREEN",
+    "brand": "Apple",
+    "model": "iPhone 13",
+    "category": "group_b_supported_rag",
+    "description": "Supported iPhone 13 display damage with typo.",
+    "input_query": "my iponw 13 droppd and scren is shattered with green lines",
+    "expected_fault_category": "cracked_screen",
+    "expected_target_sections": ["2. Display & Screen Specifications"],
+    "expected_target_keywords": ["super retina xdr", "oled", "ceramic shield"],
+    "expected_safety_escalation": false
+  },
+  {
+    "scenario_id": "GRP_B_02_SAMSUNG_A51_BATTERY",
+    "brand": "Samsung",
+    "model": "Galaxy A51",
+    "category": "group_b_supported_rag",
+    "description": "Supported Galaxy A51 battery degradation.",
+    "input_query": "battery drains in 2 hours and phone turns off at 20 percent",
+    "expected_fault_category": "battery",
+    "expected_target_sections": ["3. Battery & Power System"],
+    "expected_target_keywords": ["4000 mah", "li-po", "15w"],
+    "expected_safety_escalation": false
+  },
+  {
+    "scenario_id": "GRP_B_03_REDMI_CHARGING",
+    "brand": "Xiaomi",
+    "model": "Redmi Note 13 4G",
+    "category": "group_b_supported_rag",
+    "description": "Supported Redmi Note 13 4G charging port fault.",
+    "input_query": "phone will not charge, charging cable feels loose in the port",
+    "expected_fault_category": "charging",
+    "expected_target_sections": ["4. Charging & Port Architecture"],
+    "expected_target_keywords": ["usb-c", "33w", "sub-pba"],
+    "expected_safety_escalation": false
+  },
+  {
+    "scenario_id": "GRP_B_04_PIXEL_BATTERY",
+    "brand": "Google",
+    "model": "Pixel 8a",
+    "category": "group_b_supported_rag",
+    "description": "Supported Pixel 8a battery drain and charging specs.",
+    "input_query": "battery drains quickly and gets warm while wireless charging",
+    "expected_fault_category": "battery",
+    "expected_target_sections": ["3. Battery & Power System", "4. Charging & Port Architecture"],
+    "expected_target_keywords": ["4492 mah", "wireless charging"],
+    "expected_safety_escalation": false
+  },
+  {
+    "scenario_id": "GRP_B_05_SAMSUNG_A55_SCREEN",
+    "brand": "Samsung",
+    "model": "Galaxy A55",
+    "category": "group_b_supported_rag",
+    "description": "Supported Galaxy A55 display glass fracture.",
+    "input_query": "dropped on tile floor and display screen is broken with shattered glass",
+    "expected_fault_category": "cracked_screen",
+    "expected_target_sections": ["2. Display & Screen Specifications"],
+    "expected_target_keywords": ["super amoled", "120hz", "gorilla glass victus"],
+    "expected_safety_escalation": false
+  },
+  {
+    "scenario_id": "GRP_B_06_IPHONE13PRO_BATTERY",
+    "brand": "Apple",
+    "model": "iPhone 13 Pro",
+    "category": "group_b_supported_rag",
+    "description": "Supported iPhone 13 Pro battery replacement inquiry.",
+    "input_query": "battery health at 72 percent and phone drains fast during the day",
+    "expected_fault_category": "battery",
+    "expected_target_sections": ["3. Battery & Power System"],
+    "expected_target_keywords": ["3095 mah", "fast charging", "magsafe"],
+    "expected_safety_escalation": false
+  },
+  {
+    "scenario_id": "GRP_B_07_REDMI_NOTE13_5G_SCREEN",
+    "brand": "Xiaomi",
+    "model": "Redmi Note 13 5G",
+    "category": "group_b_supported_rag",
+    "description": "Supported Redmi Note 13 5G display fracture.",
+    "input_query": "screen cracked after dropping it, touch unresponsive and glass shattered",
+    "expected_fault_category": "cracked_screen",
+    "expected_target_sections": ["2. Display & Screen Specifications"],
+    "expected_target_keywords": ["amoled", "120hz", "gorilla glass"],
+    "expected_safety_escalation": false
+  },
+  {
+    "scenario_id": "GRP_C_01_NEAR_MISS_IPHONE14",
+    "brand": "Apple",
+    "model": "iPhone 14",
+    "category": "group_c_unsupported_near_miss",
+    "description": "Near-miss non-indexed model (iPhone 14 vs supported iPhone 13). Tests false-positive RAG gating and catalog pricing rejection.",
+    "input_query": "my iphone 14 screen shattered after falling on concrete",
+    "expected_fault_category": "cracked_screen",
+    "expected_safety_escalation": false
+  },
+  {
+    "scenario_id": "GRP_C_02_NEAR_MISS_GALAXY_A52",
+    "brand": "Samsung",
+    "model": "Galaxy A52",
+    "category": "group_c_unsupported_near_miss",
+    "description": "Near-miss non-indexed model (Galaxy A52 vs supported Galaxy A51/A55). Tests model boundary gating.",
+    "input_query": "battery drains in less than 2 hours and phone turns off at 20%",
+    "expected_fault_category": "battery",
+    "expected_safety_escalation": false
+  },
+  {
+    "scenario_id": "GRP_C_03_NEAR_MISS_GALAXY_S23",
+    "brand": "Samsung",
+    "model": "Galaxy S23",
+    "category": "group_c_unsupported_near_miss",
+    "description": "Near-miss non-indexed flagship (Galaxy S23 vs supported Galaxy A55). Tests family leakage.",
+    "input_query": "charging port is loose and cable falls out",
+    "expected_fault_category": "charging",
+    "expected_safety_escalation": false
+  },
+  {
+    "scenario_id": "GRP_C_04_NEAR_MISS_REDMI_NOTE12",
+    "brand": "Xiaomi",
+    "model": "Redmi Note 12",
+    "category": "group_c_unsupported_near_miss",
+    "description": "Near-miss non-indexed model (Redmi Note 12 vs supported Redmi Note 13). Tests generation leakage.",
+    "input_query": "display glass cracked and screen won't turn on",
+    "expected_fault_category": "cracked_screen",
+    "expected_safety_escalation": false
+  },
+  {
+    "scenario_id": "GRP_C_05_NEAR_MISS_PIXEL7",
+    "brand": "Google",
+    "model": "Pixel 7",
+    "category": "group_c_unsupported_near_miss",
+    "description": "Near-miss non-indexed model (Pixel 7 vs supported Pixel 8a). Tests generation leakage.",
+    "input_query": "phone gets very hot when playing games and battery drops fast",
+    "expected_fault_category": "overheating",
+    "expected_safety_escalation": false
+  },
+  {
+    "scenario_id": "GRP_C_06_NEAR_MISS_POCO_X5",
+    "brand": "Poco",
+    "model": "X5",
+    "category": "group_c_unsupported_near_miss",
+    "description": "Near-miss non-indexed model (Poco X5 vs supported Poco X6). Tests version boundary.",
+    "input_query": "battery draining very quickly overnight",
+    "expected_fault_category": "battery",
+    "expected_safety_escalation": false
+  },
+  {
+    "scenario_id": "GRP_C_07_DISTANT_ONEPLUS11",
+    "brand": "OnePlus",
+    "model": "11",
+    "category": "group_c_unsupported_distant",
+    "description": "Distant brand and model not in catalog. Tests fail-closed behavior.",
+    "input_query": "display cracked after dropping it on concrete, touch unresponsive",
+    "expected_fault_category": "cracked_screen",
+    "expected_safety_escalation": false
+  }
+]

@@ -27,7 +27,8 @@ COMPONENT_MAP = {
 
 def _tokenize(text: str) -> list[str]:
     """Tokenize text into lowercase alphanumeric words."""
-    return re.findall(r"\b[a-zA-Z0-9_\-]{2,}\b", text.lower())
+    clean_text = text.replace("_", " ").lower()
+    return re.findall(r"\b[a-zA-Z0-9\-]{2,}\b", clean_text)
 
 
 def _compute_tf(tokens: list[str]) -> dict[str, float]:
@@ -42,6 +43,20 @@ def _normalize_label(value: str) -> str:
     value = value.casefold().strip()
     value = re.sub(r"(?<=[a-z])(?=\d)|(?<=\d)(?=[a-z])", " ", value)
     return " ".join(re.findall(r"[a-z0-9]+", value))
+
+
+def _format_citation(
+    brand: str,
+    model: str,
+    section: str,
+    source_title: str,
+    date_verified: str,
+) -> str:
+    parts = [f"{brand} {model}".strip(), section, source_title]
+    citation = " | ".join(part for part in parts if part)
+    if date_verified:
+        citation += f" (dataset date: {date_verified})"
+    return citation
 
 
 def _matches_model_strictly(
@@ -112,13 +127,16 @@ class LexicalTFIDFVectorStore:
         model: str = "",
         component: str = "",
         top_k: int = 2,
-        min_score: float = 0.05,
+        min_score: float = 0.10,
     ) -> list[dict[str, Any]]:
-        if not self.chunks or not brand.strip() or not model.strip():
+        if top_k <= 0 or not self.chunks or not brand.strip() or not model.strip():
             # Fail closed: never return generic chunks without a validated model target
             return []
 
-        query_tokens = _tokenize(query)
+        clean_query = query.replace("_", " ")
+        target_comp = COMPONENT_MAP.get(component.strip().lower(), component.strip().lower())
+
+        query_tokens = _tokenize(clean_query)
         if not query_tokens:
             return []
 
@@ -149,7 +167,7 @@ class LexicalTFIDFVectorStore:
             # 4. Component Relevance Boost
             boost = 1.0
             if target_comp and target_comp == chunk_comp:
-                boost *= 1.4
+                boost *= 1.2
 
             score = min(round(sim * boost, 4), 1.0)
             if score >= min_score:
@@ -160,35 +178,75 @@ class LexicalTFIDFVectorStore:
                 source_url = chunk.get("source_url", "")
                 date_verified = chunk.get("date_verified", "")
                 section_title = chunk.get("section", "")
-                item["citation"] = f"{chunk.get('brand', '')} {chunk.get('model', '')} — {section_title}"
-                if source_title:
-                    item["citation"] += f" — {source_title}"
-                if date_verified:
-                    item["citation"] += f" (checked {date_verified})"
                 item["source_url"] = source_url
-                item["sources"] = chunk.get("sources", [{
+                sources = chunk.get("sources", [{
                     "doc": source_title,
                     "source_url": source_url,
                 }])
+                item["sources"] = [
+                    {
+                        **source,
+                        "citation": _format_citation(
+                            str(chunk.get("brand", "")),
+                            str(chunk.get("model", "")),
+                            section_title,
+                            str(source.get("doc", "")),
+                            str(source.get("date_verified", date_verified) or ""),
+                        ),
+                        "date_verified": source.get("date_verified", date_verified),
+                        "verification_status": source.get(
+                            "verification_status",
+                            chunk.get("source_verification_status", "linked_unverified"),
+                        ),
+                        "scope": source.get("scope", "section"),
+                    }
+                    for source in sources
+                ]
+                if item["sources"]:
+                    item["citation"] = item["sources"][0]["citation"]
+                    item["source_url"] = item["sources"][0].get("source_url", source_url)
+                item["source_verification_status"] = chunk.get(
+                    "source_verification_status", "linked_unverified"
+                )
                 results.append(item)
 
-        results.sort(key=lambda x: x["score"], reverse=True)
+        results.sort(key=lambda x: (x["score"], x.get("chunk_id", "")), reverse=True)
         return results[:top_k]
 
 
 _GLOBAL_STORE: LexicalTFIDFVectorStore | None = None
+_GLOBAL_STORE_SIGNATURE: tuple[Any, ...] | None = None
 
 
-def get_vector_store(datasheets_dir: Path | str | None = None) -> LexicalTFIDFVectorStore:
-    """Retrieve or initialize the vector store. Custom paths create an isolated instance."""
-    global _GLOBAL_STORE
+def _corpus_signature(datasheets_dir: Path) -> tuple[Any, ...]:
+    """Return a cheap signature so edits/additions/removals rebuild the index."""
+    try:
+        files = sorted(datasheets_dir.glob("*.md"))
+        return (
+            str(datasheets_dir.resolve()),
+            *((file.name, file.stat().st_mtime_ns, file.stat().st_size) for file in files),
+        )
+    except OSError:
+        return (str(datasheets_dir.resolve()), "unavailable")
+
+
+def get_vector_store(
+    datasheets_dir: Path | str | None = None,
+    *,
+    force_reload: bool = False,
+) -> LexicalTFIDFVectorStore:
+    """Get an index, rebuilding the default cache when its Markdown corpus changes."""
+    global _GLOBAL_STORE, _GLOBAL_STORE_SIGNATURE
     if datasheets_dir is not None:
         chunks = load_all_chunks(datasheets_dir)
         return LexicalTFIDFVectorStore(chunks)
 
-    if _GLOBAL_STORE is None:
-        chunks = load_all_chunks()
+    default_dir = Path(__file__).resolve().parent.parent.parent / "data" / "datasheets"
+    signature = _corpus_signature(default_dir)
+    if force_reload or _GLOBAL_STORE is None or signature != _GLOBAL_STORE_SIGNATURE:
+        chunks = load_all_chunks(default_dir)
         _GLOBAL_STORE = LexicalTFIDFVectorStore(chunks)
+        _GLOBAL_STORE_SIGNATURE = signature
     return _GLOBAL_STORE
 
 
@@ -199,6 +257,7 @@ def query_datasheet_rag(
     component: str = "",
     top_k: int = 2,
     datasheets_dir: Path | str | None = None,
+    min_score: float = 0.10,
 ) -> list[dict[str, Any]]:
     """Query technical datasheets and return matched excerpts with source metadata."""
     store = get_vector_store(datasheets_dir)
@@ -208,4 +267,5 @@ def query_datasheet_rag(
         model=model,
         component=component,
         top_k=top_k,
+        min_score=min_score,
     )

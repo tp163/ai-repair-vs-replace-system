@@ -194,6 +194,9 @@ def _render_results(state: dict, fault: str) -> None:
                     detail = f'Section: {escape(str(src.get("section", "")))} · Source: {link_html}'
                     if src.get("date_verified"):
                         detail += f' · Checked: {escape(str(src["date_verified"]))}'
+                    detail = detail.replace("Checked:", "Dataset date:")
+                    if src.get("verification_status") == "linked_unverified":
+                        detail += ' | Linked source; claim not independently verified'
                     st.markdown(
                         f'<p class="catalog-note">{detail}</p>',
                         unsafe_allow_html=True,
