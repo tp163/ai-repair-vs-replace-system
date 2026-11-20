@@ -1,29 +1,302 @@
-@import "tailwindcss";
+﻿@import "tailwindcss";
+
+/* Semantic colors keep the same theme across every route. */
+@theme inline {
+  --color-page: var(--page);
+  --color-section: var(--section);
+  --color-card: var(--card);
+  --color-footer: var(--footer);
+  --color-surface: var(--surface);
+  --color-raised: var(--raised);
+  --color-inset: var(--inset);
+  --color-hover: var(--hover);
+  --color-line: var(--line);
+  --color-edge: var(--edge);
+  --color-contrast: var(--contrast);
+  --color-foreground: var(--foreground);
+  --color-ink-100: var(--ink-100);
+  --color-ink-200: var(--ink-200);
+  --color-ink-300: var(--ink-300);
+  --color-ink-400: var(--ink-400);
+  --color-ink-500: var(--ink-500);
+  --color-ink-600: var(--ink-600);
+  --color-cyan-ink-100: var(--accent);
+  --color-cyan-ink-200: var(--accent);
+  --color-cyan-ink-300: var(--accent);
+  --color-cyan-ink-400: var(--accent-strong);
+  --color-cyan-ink-500: var(--accent-strong);
+  --color-blue-ink-300: var(--blue-ink);
+  --color-purple-ink-200: var(--purple-ink);
+  --color-purple-ink-300: var(--purple-ink);
+  --color-purple-ink-400: var(--purple-ink);
+  --color-sky-ink-300: var(--blue-ink);
+  --color-sky-ink-400: var(--blue-ink);
+  --color-orange-ink-300: var(--orange-ink);
+  --color-amber-ink-200: var(--amber-ink);
+  --color-amber-ink-300: var(--amber-ink);
+  --color-amber-ink-400: var(--amber-ink);
+  --color-rose-ink-300: var(--rose-ink);
+  --color-rose-ink-400: var(--rose-ink);
+  --color-emerald-ink-400: var(--green-ink);
+  --color-cyan-tint-900: var(--cyan-tint);
+  --color-cyan-tint-950: var(--cyan-tint);
+  --color-purple-tint-900: var(--purple-tint);
+  --color-purple-tint-950: var(--purple-tint);
+  --color-sky-tint-950: var(--cyan-tint);
+  --color-amber-tint-950: var(--amber-tint);
+  --color-emerald-tint-950: var(--green-tint);
+  --background-image-catalogue: var(--catalogue-bg);
+  --background-image-gallery: var(--gallery-bg);
+  --background-image-product: var(--product-bg);
+}
+
+:root {
+  color-scheme: dark;
+  --page: #06091a;
+  --section: #070d1f;
+  --card: #0c1328;
+  --footer: #040810;
+  --surface: #0f172a;
+  --raised: #1e293b;
+  --inset: #020617;
+  --hover: #334155;
+  --line: #ffffff;
+  --edge: #334155;
+  --contrast: #ffffff;
+  --foreground: #ffffff;
+  --ink-100: #f1f5f9;
+  --ink-200: #e2e8f0;
+  --ink-300: #cbd5e1;
+  --ink-400: #94a3b8;
+  --ink-500: #64748b;
+  --ink-600: #475569;
+  --accent: #67e8f9;
+  --accent-strong: #22d3ee;
+  --blue-ink: #93c5fd;
+  --purple-ink: #c4b5fd;
+  --orange-ink: #fdba74;
+  --amber-ink: #fcd34d;
+  --rose-ink: #fda4af;
+  --green-ink: #34d399;
+  --cyan-tint: #083344;
+  --purple-tint: #3b0764;
+  --amber-tint: #451a03;
+  --green-tint: #022c22;
+  --catalogue-bg: radial-gradient(ellipse at top right, #11234b 0%, transparent 42%), radial-gradient(ellipse at top left, #0b2639 0%, transparent 34%);
+  --gallery-bg: radial-gradient(ellipse at center, #233a65, #0c1328 75%);
+  --product-bg: radial-gradient(ellipse at center, #233a65 0%, transparent 73%);
+}
+
+html[data-theme="light"] {
+  color-scheme: light;
+  --page: #ffffff;
+  --section: #f3f3f1;
+  --card: #ffffff;
+  --footer: #eeeeec;
+  --surface: #ffffff;
+  --raised: #e9ebee;
+  --inset: #f0f1f3;
+  --hover: #dde1e7;
+  --line: #172033;
+  --edge: #cbd0d8;
+  --contrast: #182235;
+  --foreground: #202122;
+  --ink-100: #202122;
+  --ink-200: #30343b;
+  --ink-300: #454b55;
+  --ink-400: #5a626e;
+  --ink-500: #626b78;
+  --ink-600: #707987;
+  --accent: #21569a;
+  --accent-strong: #164a8c;
+  --blue-ink: #2458a0;
+  --purple-ink: #6d28a8;
+  --orange-ink: #b34708;
+  --amber-ink: #895700;
+  --rose-ink: #b42342;
+  --green-ink: #08734e;
+  --cyan-tint: #e2f0fc;
+  --purple-tint: #f0e6ff;
+  --amber-tint: #fff0cc;
+  --green-tint: #dcf5e9;
+  --catalogue-bg: radial-gradient(ellipse at top right, #eef2f8, transparent 55%);
+  --gallery-bg: radial-gradient(ellipse at center, #ffffff, #e8e9e7 85%);
+  --product-bg: radial-gradient(ellipse at center, #e5e8ec, transparent 73%);
+}
 
 @layer base {
   html, body {
-    background-color: #06091a;
-    color: #f8fafc;
+    background: var(--page);
+    color: var(--ink-100);
     margin: 0;
     padding: 0;
     overflow-x: clip;
+    font-family: var(--font-geist-sans), Arial, sans-serif;
   }
+  button, a, input, textarea, select { -webkit-tap-highlight-color: transparent; }
+  :focus-visible { outline: 2px solid var(--accent-strong); outline-offset: 4px; }
+  ::selection { background: #f08022; color: #fff; }
 }
-/* Custom Glassmorphism Utilities */
+
 .glass-panel {
-  background: rgba(15, 23, 42, 0.65);
+  background: color-mix(in srgb, var(--surface) 80%, transparent);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  border: 1px solid color-mix(in srgb, var(--line) 10%, transparent);
+  box-shadow: 0 20px 50px #00000020;
 }
-
 .glass-input {
-  background: rgba(2, 6, 23, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: color-mix(in srgb, var(--inset) 80%, transparent);
+  border: 1px solid color-mix(in srgb, var(--line) 12%, transparent);
+}
+.glass-input:focus {
+  border-color: var(--accent-strong);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 15%, transparent);
 }
 
-.glass-input:focus {
-  border-color: rgba(6, 182, 212, 0.6);
-  box-shadow: 0 0 15px rgba(6, 182, 212, 0.2);
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-width: 38px;
+  min-height: 38px;
+  padding: 0 10px;
+  border: 1px solid #ffffff30;
+  border-radius: 8px;
+  background: #ffffff08;
+  color: #e2e8f0;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 160ms ease, border-color 160ms ease;
+}
+.theme-toggle:hover { background: #ffffff18; border-color: #ffffff60; }
+.theme-toggle[aria-pressed="true"] { color: #ffad63; border-color: #f0802266; }
+.light-hero-art, .hero-eyebrow, .light-only { display: none; }
+
+/* Light edition: blue announcement strip, charcoal navigation, orange details. */
+html[data-theme="light"] .announcement-bar { background: #214d85; }
+html[data-theme="light"] .site-header { background: #242424; border-color: #333; }
+html[data-theme="light"] .site-header img { filter: brightness(1.15); }
+html[data-theme="light"] .site-header a[aria-current] { color: #ffad63; border-color: #f08022; }
+html[data-theme="light"] .site-header a[href="/diagnose"] { background: #f08022; color: #171717; }
+html[data-theme="light"] .starry-sky { display: none; }
+html[data-theme="light"] .home-hero {
+  background: #ebebea;
+  height: 590px;
+  isolation: isolate;
+}
+html[data-theme="light"] .hero-video,
+html[data-theme="light"] .hero-gradient,
+html[data-theme="light"] .hero-audio { display: none; }
+html[data-theme="light"] .hero-eyebrow {
+  display: block;
+  color: #ad4c0d;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  margin-bottom: 22px;
+}
+html[data-theme="light"] .hero-title {
+  max-width: 650px;
+  font-size: clamp(2.8rem, 5.6vw, 5rem);
+  line-height: .99;
+  letter-spacing: -.065em;
+  text-transform: uppercase;
+}
+html[data-theme="light"] .hero-title span { background: none; color: #202122; }
+html[data-theme="light"] .hero-description { margin-top: 24px; max-width: 340px; color: #50545a; }
+html[data-theme="light"] .hero-primary {
+  background: #214f8b;
+  border-radius: 5px;
+  box-shadow: none;
+  padding: 14px 24px;
+}
+html[data-theme="light"] .hero-primary:hover { background: #163d72; }
+html[data-theme="light"] .hero-secondary {
+  background: transparent;
+  border-color: transparent;
+  color: #26282c;
+  box-shadow: none;
+  padding-inline: 8px;
+}
+html[data-theme="light"] .hero-secondary svg { color: #df6e11; fill: #df6e11; }
+html[data-theme="light"] .hero-proof { gap: 14px; font-family: inherit; }
+html[data-theme="light"] .light-hero-art {
+  display: block;
+  position: absolute;
+  inset: 0 0 0 46%;
+  z-index: 0;
+  overflow: hidden;
+  background: radial-gradient(ellipse at 60% 45%, #ffffff 0%, #eeeeec 52%, #ebebea 78%);
+}
+.hero-phone { position: absolute; object-fit: contain; filter: drop-shadow(12px 24px 16px #16161624); }
+.hero-phone-main { width: 56%; height: 87%; right: -2%; top: -7%; transform: rotate(23deg); }
+.hero-phone-second { width: 49%; height: 71%; left: 5%; bottom: -10%; transform: rotate(-23deg); }
+.hero-art-label {
+  position: absolute; right: 12%; bottom: 12%; font-size: 10px;
+  letter-spacing: .22em; color: #6c7076; writing-mode: vertical-rl;
+}
+html[data-theme="light"] .home-issues { background: #fff; padding-top: 32px; padding-bottom: 40px; }
+html[data-theme="light"] .issue-card {
+  position: relative;
+  min-height: 150px;
+  align-items: flex-end;
+  border: 0;
+  border-radius: 6px;
+  padding: 22px;
+  background: #eeeeec;
+  overflow: hidden;
+}
+html[data-theme="light"] .issue-card:nth-child(2) { background: #f08012; }
+html[data-theme="light"] .issue-card:nth-child(3) { background: #242424; }
+html[data-theme="light"] .issue-card:nth-child(4) { background: #e5eaf0; }
+html[data-theme="light"] .issue-card > div:first-child {
+  position: absolute; right: 16px; top: 16px;
+  width: 54px; height: 54px; background: none; box-shadow: none;
+  transform: rotate(-15deg);
+}
+html[data-theme="light"] .issue-card > div:first-child svg { width: 44px; height: 44px; color: #32383f; stroke-width: 1; }
+html[data-theme="light"] .issue-card:nth-child(3) { --foreground: #fff; --ink-400: #c3c4c7; }
+html[data-theme="light"] .issue-card:nth-child(3) svg { color: #e5e7eb; }
+html[data-theme="light"] .issue-card:nth-child(2) { --foreground: #202122; --ink-400: #3c2a1a; }
+html[data-theme="light"] .issue-card > svg { display: none; }
+html[data-theme="light"] .home-recommended { background: #fff; padding-top: 34px; padding-bottom: 56px; }
+html[data-theme="light"] .recommended-heading { justify-content: center; text-align: center; position: relative; margin-bottom: 30px; }
+html[data-theme="light"] .recommended-heading > a { position: absolute; right: 0; bottom: 0; }
+html[data-theme="light"] .light-only { display: block; }
+html[data-theme="light"] .section-eyebrow { color: #b84c07; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .25em; margin-bottom: 10px; }
+html[data-theme="light"] .recommended-heading h2 { font-size: clamp(1.5rem, 3vw, 2.25rem); font-weight: 900; letter-spacing: -.04em; text-transform: uppercase; }
+html[data-theme="light"] .phone-card { background: #f4f4f2; border-radius: 6px; border-color: transparent; box-shadow: none; }
+html[data-theme="light"] .phone-card-art { background: #e8e9e6; height: 190px; }
+.recommended-phone-image { width: 100%; height: 88%; object-fit: contain; filter: drop-shadow(5px 8px 5px #0002); }
+html[data-theme="light"] .phone-card-art > span { background: #fff; color: #3e4854; font-size: 10px; }
+html[data-theme="light"] .home-agents { background: #eee; border-color: #dedede; }
+html[data-theme="light"] .home-agents a { box-shadow: none; }
+html[data-theme="light"] .shadow-2xl,
+html[data-theme="light"] .shadow-xl { --tw-shadow: 0 8px 28px #1e293b09; }
+
+@media (max-width: 767px) {
+  html[data-theme="light"] .home-hero { height: 650px; align-items: flex-start; }
+  html[data-theme="light"] .hero-content { align-items: flex-start; padding-top: 42px; }
+  html[data-theme="light"] .hero-title { max-width: 420px; font-size: clamp(2.6rem, 8vw, 3.7rem); }
+  html[data-theme="light"] .hero-eyebrow { margin-bottom: 16px; }
+  html[data-theme="light"] .hero-description { max-width: 300px; margin-top: 16px; font-size: 14px; }
+  html[data-theme="light"] .hero-proof { display: none; }
+  html[data-theme="light"] .light-hero-art { inset: 300px -32px 0 35%; opacity: .95; }
+  .hero-phone-main { height: 90%; right: 0; top: 0; }
+  .hero-phone-second { height: 80%; left: 0; bottom: -18%; }
+  .hero-art-label { display: none; }
+  html[data-theme="light"] .issue-card { padding: 15px; min-height: 160px; }
+  html[data-theme="light"] .issue-card .truncate { white-space: normal; }
+  html[data-theme="light"] .recommended-heading { padding-bottom: 24px; }
+  html[data-theme="light"] .recommended-heading > a { right: 50%; transform: translateX(50%); }
+  html[data-theme="light"] .phone-card-art { height: 150px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; }
+  .theme-toggle { transition: none; }
 }

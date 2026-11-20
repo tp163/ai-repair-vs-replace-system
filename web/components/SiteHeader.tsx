@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Cpu, Heart, Search, Stethoscope, User, Zap } from 'lucide-react';
+import ThemeToggle from './ThemeToggle';
 
 const links = [
   { name: 'Home', href: '/' },
@@ -16,7 +17,7 @@ export default function SiteHeader() {
 
   return (
     <>
-      <div className="z-40 flex w-full items-center justify-center gap-6 bg-gradient-to-r from-blue-700 via-cyan-600 to-blue-700 px-4 py-2 font-mono text-xs text-white">
+      <div className="announcement-bar z-40 flex w-full items-center justify-center gap-6 bg-gradient-to-r from-blue-700 via-cyan-600 to-blue-700 px-4 py-2 font-mono text-xs text-white">
         <span className="flex items-center gap-1.5">
           <Zap className="size-3.5 shrink-0 text-cyan-200" aria-hidden="true" />
           Smarter Decisions, Longer Life for Your Device.
@@ -27,7 +28,7 @@ export default function SiteHeader() {
           Powered by Multi-Agent AI Technology
         </span>
       </div>
-      <header className="sticky top-0 z-50 w-full border-b border-white/5 bg-[#070d1f]/95 backdrop-blur-md">
+      <header className="site-header sticky top-0 z-50 w-full border-b border-white/5 bg-[#070d1f]/95 backdrop-blur-md">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-x-2 px-4 md:gap-x-4 md:px-8 lg:flex-nowrap">
           <Link href="/" className="group flex h-14 shrink-0 items-center gap-3">
             <Image
@@ -70,6 +71,7 @@ export default function SiteHeader() {
           </nav>
 
           <div className="ml-auto flex shrink-0 items-center gap-2 text-slate-400 sm:gap-3">
+            <ThemeToggle />
             <Link
               href="/diagnose"
               aria-current={pathname === '/diagnose' ? 'page' : undefined}
