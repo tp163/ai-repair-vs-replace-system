@@ -2,6 +2,8 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import PhoneIllustration from './find-a-phone/phone-illustration';
+import { phones as cataloguePhones } from './find-a-phone/catalogue-data';
 import {
   motion,
   AnimatePresence,
@@ -94,7 +96,7 @@ function StarrySkyBackground() {
     };
   }, []);
 
-  return <canvas ref={canvasRef} className="fixed inset-0 pointer-events-none z-0" />;
+  return <canvas ref={canvasRef} className="starry-sky fixed inset-0 pointer-events-none z-0" />;
 }
 
 /* ─── OPENING SYSTEM SHOWCASE VIDEO MODAL ─── */
@@ -332,7 +334,12 @@ function Hero({
   };
 
   return (
-    <section className="relative w-full h-[560px] overflow-hidden bg-[#040714] select-none z-20 flex items-center justify-center">
+    <section className="home-hero relative w-full h-[560px] overflow-hidden bg-[#040714] select-none z-20 flex items-center justify-center">
+      <div className="light-hero-art" aria-hidden="true">
+        <div className="hero-phone hero-phone-main"><PhoneIllustration phone={cataloguePhones[0]} className="size-full" /></div>
+        <div className="hero-phone hero-phone-second"><PhoneIllustration phone={cataloguePhones.find(phone => phone.brand === 'Samsung') ?? cataloguePhones[0]} className="size-full" /></div>
+        <span className="hero-art-label">A LITTLE CLARITY. A BETTER CHOICE.</span>
+      </div>
       {/* Softly Blurred Ambient Backdrop */}
       <video
         ref={ambientVideoRef}
@@ -342,7 +349,7 @@ function Hero({
         playsInline
         preload="auto"
         aria-hidden="true"
-        className="absolute inset-0 w-full h-full object-cover object-center blur-2xl scale-110 opacity-35 pointer-events-none"
+        className="hero-video absolute inset-0 w-full h-full object-cover object-center blur-2xl scale-110 opacity-35 pointer-events-none"
       >
         <source src={HERO_BG_VIDEO_SRC} type="video/mp4" />
       </video>
@@ -355,60 +362,61 @@ function Hero({
         loop
         playsInline
         preload="auto"
-        className="absolute inset-0 w-full h-full object-contain md:object-right opacity-85 z-10 transition-all duration-700"
+        className="hero-video absolute inset-0 w-full h-full object-contain md:object-right opacity-85 z-10 transition-all duration-700"
       >
         <source src={HERO_BG_VIDEO_SRC} type="video/mp4" />
       </video>
 
       {/* Readability Gradients */}
-      <div className="absolute inset-0 z-10 bg-gradient-to-r from-[#06091a] via-[#06091a]/75 to-transparent pointer-events-none" />
-      <div className="absolute bottom-0 left-0 right-0 h-24 z-10 bg-gradient-to-t from-[#070d1f] to-transparent pointer-events-none" />
+      <div className="hero-gradient absolute inset-0 z-10 bg-gradient-to-r from-[#06091a] via-[#06091a]/75 to-transparent pointer-events-none" />
+      <div className="hero-gradient absolute bottom-0 left-0 right-0 h-24 z-10 bg-gradient-to-t from-[#070d1f] to-transparent pointer-events-none" />
 
       {/* Floating Audio Mute Control */}
-      <div className="absolute bottom-6 right-6 z-30 flex items-center gap-2.5">
+      <div className="hero-audio absolute bottom-6 right-6 z-30 flex items-center gap-2.5">
         <button
           onClick={toggleMute}
           aria-label={isMuted ? 'Unmute' : 'Mute'}
-          className="w-9 h-9 rounded-full bg-black/40 hover:bg-black/60 backdrop-blur-md border border-white/15 flex items-center justify-center text-white/80 hover:text-white transition-all"
+          className="w-9 h-9 rounded-full bg-black/40 hover:bg-black/60 backdrop-blur-md border border-line/15 flex items-center justify-center text-foreground/80 hover:text-foreground transition-all"
         >
-          {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4 text-cyan-400" />}
+          {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4 text-cyan-ink-400" />}
         </button>
       </div>
 
       {/* HERO CONTENT */}
-      <div className="absolute inset-0 z-20 max-w-7xl mx-auto px-4 md:px-8 h-full flex items-center">
+      <div className="hero-content absolute inset-0 z-20 max-w-7xl mx-auto px-4 md:px-8 h-full flex items-center">
         <div className="max-w-xl">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-white leading-tight">
+          <p className="hero-eyebrow">Repair. Replace. Rethink what comes next.</p>
+          <h1 className="hero-title text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-foreground leading-tight">
             Your Phone.<br />
             <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
               A Smarter Next Move.
             </span>
           </h1>
-          <p className="mt-4 text-slate-300 text-sm md:text-base leading-relaxed max-w-sm">
+          <p className="hero-description mt-4 text-ink-300 text-sm md:text-base leading-relaxed max-w-sm">
             AI agents work together to diagnose faults, estimate repair costs, and find the right replacement.
           </p>
 
           <div className="mt-7 flex flex-wrap items-center gap-3">
             <Link
               href="/diagnose"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold rounded-full text-sm transition-all shadow-[0_0_30px_rgba(6,182,212,0.4)] hover:shadow-[0_0_35px_rgba(6,182,212,0.6)] cursor-pointer"
+              className="hero-primary inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold rounded-full text-sm transition-all shadow-[0_0_30px_rgba(6,182,212,0.4)] hover:shadow-[0_0_35px_rgba(6,182,212,0.6)] cursor-pointer"
             >
               Diagnose My Phone <ArrowRight className="w-4 h-4" />
             </Link>
             <button
               onClick={onOpenSystemVideo}
-              className="inline-flex items-center gap-2 px-5 py-3 bg-white/10 hover:bg-white/15 border border-white/20 text-white font-semibold rounded-full text-sm backdrop-blur-sm transition-all"
+              className="hero-secondary inline-flex items-center gap-2 px-5 py-3 bg-contrast/10 hover:bg-contrast/15 border border-line/20 text-foreground font-semibold rounded-full text-sm backdrop-blur-sm transition-all"
             >
-              <Play className="w-3.5 h-3.5 text-cyan-400 fill-cyan-400" /> System Overview
+              <Play className="w-3.5 h-3.5 text-cyan-ink-400 fill-cyan-400" /> System Overview
             </button>
           </div>
 
-          <div className="mt-7 flex flex-wrap gap-5 text-xs text-slate-400 font-mono">
-            <span className="flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-cyan-400" /> Multi-agent analysis</span>
-            <span className="text-slate-600">|</span>
-            <span className="flex items-center gap-1.5"><MapPin className="w-3.5 h-3.5 text-cyan-500" /> Sri Lankan prices</span>
-            <span className="text-slate-600">|</span>
-            <span className="flex items-center gap-1.5"><Shield className="w-3.5 h-3.5 text-cyan-500" /> Clear recommendations</span>
+          <div className="hero-proof mt-7 flex flex-wrap gap-5 text-xs text-ink-400 font-mono">
+            <span className="flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-cyan-ink-400" /> Multi-agent analysis</span>
+            <span className="text-ink-600">|</span>
+            <span className="flex items-center gap-1.5"><MapPin className="w-3.5 h-3.5 text-cyan-ink-500" /> Sri Lankan prices</span>
+            <span className="text-ink-600">|</span>
+            <span className="flex items-center gap-1.5"><Shield className="w-3.5 h-3.5 text-cyan-ink-500" /> Clear recommendations</span>
           </div>
         </div>
       </div>
@@ -426,14 +434,14 @@ const issues = [
 
 function IssueCards() {
   return (
-    <section className="w-full bg-[#070d1f] py-10 px-4 md:px-8 z-10 relative">
+    <section className="home-issues w-full bg-section py-10 px-4 md:px-8 z-10 relative">
       <div className="max-w-7xl mx-auto">
         <div className="flex items-center justify-between mb-5">
           <div>
-            <h2 className="text-lg font-bold text-white">Start with your phone fault</h2>
-            <p className="text-xs text-slate-400 mt-0.5">Select a common problem to launch direct diagnosis</p>
+            <h2 className="text-lg font-bold text-foreground">Start with your phone fault</h2>
+            <p className="text-xs text-ink-400 mt-0.5">Select a common problem to launch direct diagnosis</p>
           </div>
-          <Link href="/diagnose" className="text-xs text-cyan-400 hover:underline flex items-center gap-1 font-mono">
+          <Link href="/diagnose" className="text-xs text-cyan-ink-400 hover:underline flex items-center gap-1 font-mono">
             Go to Diagnose Page <ChevronRight className="w-3.5 h-3.5" />
           </Link>
         </div>
@@ -442,16 +450,16 @@ function IssueCards() {
             <Link
               key={item.label}
               href={`/diagnose?issue=${encodeURIComponent(item.label)}`}
-              className="flex items-center gap-3 bg-slate-900/70 border border-white/8 rounded-2xl p-4 cursor-pointer hover:border-cyan-500/40 hover:bg-slate-900/90 transition-all group"
+              className="issue-card flex items-center gap-3 bg-surface/70 border border-line/8 rounded-2xl p-4 cursor-pointer hover:border-cyan-500/40 hover:bg-surface/90 transition-all group"
             >
               <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${item.color} flex items-center justify-center shrink-0 shadow-lg`}>
                 <item.icon className="w-5 h-5 text-white" />
               </div>
               <div className="flex-1 min-w-0">
-                <div className="text-sm font-bold text-white truncate">{item.label}</div>
-                <div className="text-[11px] text-slate-400 mt-0.5">{item.sub}</div>
+                <div className="text-sm font-bold text-foreground truncate">{item.label}</div>
+                <div className="text-[11px] text-ink-400 mt-0.5">{item.sub}</div>
               </div>
-              <ChevronRight className="w-4 h-4 text-slate-500 group-hover:text-cyan-400 transition-colors shrink-0" />
+              <ChevronRight className="w-4 h-4 text-ink-500 group-hover:text-cyan-ink-400 transition-colors shrink-0" />
             </Link>
           ))}
         </div>
@@ -470,27 +478,29 @@ const phones = [
 
 function RecommendedPhones() {
   return (
-    <section id="recommended" className="w-full bg-[#06091a] py-12 px-4 md:px-8 z-10 relative">
+    <section id="recommended" className="home-recommended w-full bg-page py-12 px-4 md:px-8 z-10 relative">
       <div className="max-w-7xl mx-auto">
-        <div className="flex items-end justify-between mb-6">
+        <div className="recommended-heading flex items-end justify-between mb-6">
           <div>
-            <h2 className="text-lg font-bold text-white">Recommended Phones</h2>
-            <p className="text-xs text-slate-400 mt-1">Based on your budget and needs</p>
+            <p className="light-only section-eyebrow">Your next chapter</p>
+            <h2 className="text-lg font-bold text-foreground">Recommended Phones</h2>
+            <p className="text-xs text-ink-400 mt-1">Based on your budget and needs</p>
           </div>
-          <Link href="/find-a-phone" className="text-xs text-cyan-400 hover:underline flex items-center gap-1">
+          <Link href="/find-a-phone" className="text-xs text-cyan-ink-400 hover:underline flex items-center gap-1">
             See all <ChevronRight className="w-3.5 h-3.5" />
           </Link>
         </div>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {phones.map((phone) => (
-            <motion.div key={phone.name} whileHover={{ y: -4 }} className="bg-slate-900/70 border border-white/8 rounded-2xl p-4 flex flex-col gap-3 hover:border-cyan-500/40 transition-all">
-              <div className={`w-full h-36 rounded-xl bg-gradient-to-br ${phone.color} flex items-center justify-center relative overflow-hidden`}>
-                <span className="absolute top-2 right-2 text-[10px] font-bold bg-white/20 backdrop-blur-sm px-2 py-0.5 rounded-full text-white">{phone.tag}</span>
+            <motion.div key={phone.name} whileHover={{ y: -4 }} className="phone-card bg-surface/70 border border-line/8 rounded-2xl p-4 flex flex-col gap-3 hover:border-cyan-500/40 transition-all">
+              <div className={`phone-card-art w-full h-36 rounded-xl bg-gradient-to-br ${phone.color} flex items-center justify-center relative overflow-hidden`}>
+                <PhoneIllustration phone={cataloguePhones.find(item => phone.name.startsWith(item.brand) || (item.brand === 'Apple' && phone.name.startsWith('iPhone'))) ?? cataloguePhones[0]} className="light-only recommended-phone-image" />
+                <span className="absolute top-2 right-2 text-[10px] font-bold bg-contrast/20 backdrop-blur-sm px-2 py-0.5 rounded-full text-foreground">{phone.tag}</span>
               </div>
               <div>
-                <div className="text-lg font-black text-cyan-400">{phone.price}</div>
-                <div className="text-xs font-semibold text-white mt-0.5 truncate">{phone.name}</div>
-                <div className="mt-2 flex flex-wrap gap-x-3 text-[10px] text-slate-400">
+                <div className="text-lg font-black text-cyan-ink-400">{phone.price}</div>
+                <div className="text-xs font-semibold text-foreground mt-0.5 truncate">{phone.name}</div>
+                <div className="mt-2 flex flex-wrap gap-x-3 text-[10px] text-ink-400">
                   <span>📱 {phone.display}</span>
                   <span>⚡ {phone.ram}</span>
                   <span>💾 {phone.storage}</span>
@@ -513,33 +523,33 @@ const agents = [
 
 function AgentBanner() {
   return (
-    <section id="agents" className="w-full bg-gradient-to-r from-[#06091a] via-[#0a1535] to-[#06091a] border-y border-white/5 py-10 px-4 md:px-8 z-10 relative">
+    <section id="agents" className="home-agents w-full bg-gradient-to-r from-[#06091a] via-[#0a1535] to-[#06091a] border-y border-line/5 py-10 px-4 md:px-8 z-10 relative">
       <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-8">
         <div className="shrink-0 max-w-xs">
-          <h2 className="text-2xl md:text-3xl font-black text-white leading-tight">
+          <h2 className="text-2xl md:text-3xl font-black text-foreground leading-tight">
             Repair it. Replace it.{' '}
             <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">Know why.</span>
           </h2>
           <div className="mt-4">
             <Link
               href="/diagnose"
-              className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 hover:from-cyan-500/30 hover:to-blue-500/30 border border-cyan-500/40 text-cyan-300 font-semibold rounded-full text-xs transition-all shadow-[0_0_15px_rgba(6,182,212,0.15)]"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 hover:from-cyan-500/30 hover:to-blue-500/30 border border-cyan-500/40 text-cyan-ink-300 font-semibold rounded-full text-xs transition-all shadow-[0_0_15px_rgba(6,182,212,0.15)]"
             >
               Open Diagnostic Page <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
         </div>
-        <div className="hidden lg:block w-px h-20 bg-white/10" />
+        <div className="hidden lg:block w-px h-20 bg-contrast/10" />
         <div className="flex-1 flex flex-col sm:flex-row items-center justify-around gap-6 w-full">
           {agents.map((a) => (
             <Link key={a.name} href="/diagnose" className="flex items-center gap-6 group cursor-pointer">
               <div className="flex flex-col items-center text-center gap-2">
                 <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-blue-600/20 border border-cyan-500/30 flex items-center justify-center shadow-[0_0_20px_rgba(6,182,212,0.15)] group-hover:border-cyan-400 transition-all">
-                  <a.icon className="w-6 h-6 text-cyan-400 group-hover:scale-110 transition-transform" />
+                  <a.icon className="w-6 h-6 text-cyan-ink-400 group-hover:scale-110 transition-transform" />
                 </div>
                 <div>
-                  <div className="text-sm font-bold text-white group-hover:text-cyan-300 transition-colors">{a.name}</div>
-                  <div className="text-[11px] text-slate-400">{a.sub}</div>
+                  <div className="text-sm font-bold text-foreground group-hover:text-cyan-ink-300 transition-colors">{a.name}</div>
+                  <div className="text-[11px] text-ink-400">{a.sub}</div>
                 </div>
               </div>
             </Link>
@@ -560,11 +570,11 @@ const trustItems = [
 
 function TrustBar() {
   return (
-    <div className="w-full bg-[#040810] border-t border-white/5 py-4 px-4 md:px-8 z-10 relative">
+    <div className="w-full bg-footer border-t border-line/5 py-4 px-4 md:px-8 z-10 relative">
       <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-center gap-6 md:gap-10">
         {trustItems.map((item) => (
-          <span key={item.label} className="flex items-center gap-2 text-xs text-slate-400 font-mono">
-            <item.icon className="w-3.5 h-3.5 text-cyan-500" />
+          <span key={item.label} className="flex items-center gap-2 text-xs text-ink-400 font-mono">
+            <item.icon className="w-3.5 h-3.5 text-cyan-ink-500" />
             {item.label}
           </span>
         ))}
@@ -578,7 +588,7 @@ export default function HomePage() {
   const [showSystemIntro, setShowSystemIntro] = useState(true);
 
   return (
-    <div className="flex flex-1 flex-col bg-[#06091a] text-slate-100 relative overflow-x-clip">
+    <div className="flex flex-1 flex-col bg-page text-ink-100 relative overflow-x-clip">
       <StarrySkyBackground />
 
       {/* Opening system video overlay */}

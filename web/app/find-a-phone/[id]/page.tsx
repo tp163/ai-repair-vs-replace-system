@@ -15,7 +15,7 @@ export default async function PhonePage({ params }: { params: Promise<{ id: stri
 
   return (
     <main className="mx-auto w-full max-w-7xl px-4 pt-6 pb-14 sm:px-8 sm:pt-8">
-      <Link href="/find-a-phone" className="mb-6 inline-flex items-center gap-2 text-sm text-cyan-300 hover:text-white">
+      <Link href="/find-a-phone" className="mb-6 inline-flex items-center gap-2 text-sm text-cyan-ink-300 hover:text-foreground">
         <ArrowLeft className="size-4" aria-hidden="true" />
         All phones
       </Link>

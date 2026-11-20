@@ -1,0 +1,32 @@
+[
+  {
+    "id": "Uc8NgD9hVaA",
+    "brand": "Apple",
+    "stepKind": "restart",
+    "title": "Turn your iPhone off and on",
+    "channel": "Apple Support",
+    "url": "https://www.youtube.com/watch?v=Uc8NgD9hVaA",
+    "scope": "General iPhone guide; button layouts vary by model.",
+    "checkedAt": "2026-11-20"
+  },
+  {
+    "id": "AAMU4aaL8pA",
+    "brand": "Apple",
+    "stepKind": "backup",
+    "title": "Back up your iPhone to iCloud",
+    "channel": "Apple Support",
+    "url": "https://www.youtube.com/watch?v=AAMU4aaL8pA",
+    "scope": "General iPhone backup guide; menus vary by iOS version.",
+    "checkedAt": "2026-11-20"
+  },
+  {
+    "id": "gl8c7mYzevU",
+    "brand": "Samsung",
+    "stepKind": "backup",
+    "title": "Back up with Samsung Smart Switch",
+    "channel": "Samsung Care",
+    "url": "https://www.youtube.com/watch?v=gl8c7mYzevU",
+    "scope": "Galaxy backup using Smart Switch on a PC or Mac.",
+    "checkedAt": "2026-11-20"
+  }
+]

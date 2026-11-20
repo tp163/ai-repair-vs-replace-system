@@ -1,0 +1,161 @@
+[
+  {
+    "id": "apple-backup",
+    "brand": "Apple",
+    "stepKind": "backup",
+    "src": "/repair-reference/apple-backup.png",
+    "originalUrl": "https://cdsassets.apple.com/live/7WUAS350/images/apple-account/ios-27-iphone-17-pro-settings-icloud-icloud-backup-shows-last-backup.png",
+    "alt": "Apple Support screenshot of iCloud Backup settings with Back Up Now",
+    "source": "Apple Support",
+    "sourceUrl": "https://support.apple.com/en-us/108366",
+    "caption": "iCloud Backup settings. Menus vary by iOS version.",
+    "fit": "contain",
+    "instructionPattern": "\\bback\\s?up\\b"
+  },
+  {
+    "id": "apple-restart",
+    "brand": "Apple",
+    "stepKind": "restart",
+    "src": "/repair-reference/apple-restart.png",
+    "originalUrl": "https://cdsassets.apple.com/live/7WUAS350/images/iphone/iphone-x-and-later-restart.png",
+    "alt": "Apple's manufacturer image highlighting the volume and side buttons on a Face ID iPhone",
+    "source": "Apple Support",
+    "sourceUrl": "https://support.apple.com/en-us/118259",
+    "caption": "Button locations for iPhone X, 11, 12, 13 and later Face ID models.",
+    "fit": "contain",
+    "instructionPattern": "\\b(?:restart|reboot)\\b",
+    "models": [
+      "iPhone 13",
+      "iPhone 13 Pro"
+    ]
+  },
+  {
+    "id": "apple-charging",
+    "brand": "Apple",
+    "models": [
+      "iPhone 13",
+      "iPhone 13 Pro"
+    ],
+    "stepKind": "charging",
+    "src": "/repair-reference/apple-charging.png",
+    "originalUrl": "https://cdsassets.apple.com/live/7WUAS350/images/iphone/ios-usb-c-cable-adapter.png",
+    "alt": "Apple Support image showing a Lightning cable and a USB-C wall adapter",
+    "source": "Apple Support",
+    "sourceUrl": "https://support.apple.com/en-me/108805",
+    "caption": "A compatible Lightning cable and USB-C wall adapter.",
+    "fit": "contain",
+    "instructionPattern": "\\b(?:cable|adapter)\\b"
+  },
+  {
+    "id": "apple-temperature",
+    "brand": "Apple",
+    "stepKind": "cooldown",
+    "src": "/repair-reference/apple-temperature.png",
+    "originalUrl": "https://cdsassets.apple.com/live/7WUAS350/images/ios/ios15-iphone13-pro-iphone-temperature-alert.png",
+    "alt": "Apple Support screenshot showing an iPhone temperature warning",
+    "source": "Apple Support",
+    "sourceUrl": "https://support.apple.com/118431",
+    "caption": "An example of the iPhone temperature warning.",
+    "fit": "contain",
+    "instructionPattern": "\\btemperature (?:warning|alert)\\b"
+  },
+  {
+    "id": "samsung-backup",
+    "brand": "Samsung",
+    "stepKind": "backup",
+    "src": "/repair-reference/samsung-smart-switch.png",
+    "originalUrl": "https://image-us.samsung.com/SamsungUS/support/solutions/mobile/phones/galaxy-s/s23/PH_S23_Manually-back-up-and-restore-using-a-PC-or-Mac.png",
+    "alt": "Samsung Support screenshot of Smart Switch on a computer with the Backup option",
+    "source": "Samsung Support",
+    "sourceUrl": "https://www.samsung.com/us/support/answer/ANS10002780/",
+    "caption": "Samsung Smart Switch backup on a PC or Mac, matching the video below.",
+    "fit": "contain",
+    "instructionPattern": "\\bback\\s?up\\b"
+  },
+  {
+    "id": "samsung-restart",
+    "brand": "Samsung",
+    "stepKind": "restart",
+    "src": "/repair-reference/samsung-restart.jpg",
+    "originalUrl": "https://image-us.samsung.com/SamsungUS/support/solutions/mobile/phones/galaxy-s/s25/MOB_PH_GS_S25_Manually-restart.jpg",
+    "alt": "Samsung Support screenshot highlighting Restart in the Galaxy power menu",
+    "source": "Samsung Support",
+    "sourceUrl": "https://www.samsung.com/us/support/answer/ANS10001374/",
+    "caption": "Galaxy restart screen example. Layout varies by model.",
+    "fit": "contain",
+    "instructionPattern": "\\b(?:restart|reboot)\\b"
+  },
+  {
+    "id": "samsung-charging",
+    "brand": "Samsung",
+    "stepKind": "charging",
+    "src": "/repair-reference/samsung-charging.jpg",
+    "originalUrl": "https://images.samsung.com/is/image/samsung/assets/iq_ku/support/mobile-devices/my-galaxy-device-is-not-fast-charging-how-do-i-fix-it/2021_cs_style_guide_f02-3_mo.jpg?$ORIGIN_JPG$",
+    "alt": "Samsung Support image showing a Galaxy phone connected to a wall charger",
+    "source": "Samsung Support",
+    "sourceUrl": "https://www.samsung.com/ae/support/mobile-devices/what-to-do-if-your-galaxy-phone-is-not-charging/",
+    "caption": "Galaxy charging example; use a compatible undamaged charger.",
+    "fit": "cover",
+    "instructionPattern": "\\b(?:compatible|known.good)\\b.{0,40}\\b(?:cable|adapter|charger)\\b"
+  },
+  {
+    "id": "samsung-settings",
+    "brand": "Samsung",
+    "stepKind": "settings",
+    "src": "/repair-reference/samsung-device-care.png",
+    "originalUrl": "https://images.samsung.com/is/image/samsung/assets/ae/support/mobile-devices/what-to-do-when-your-samsung-galaxy-device-battery-drains-faster/device_optimization_step02.png?$448_N_PNG$",
+    "alt": "Samsung Support screenshot showing Device care in phone settings",
+    "source": "Samsung Support",
+    "sourceUrl": "https://www.samsung.com/ae/support/mobile-devices/what-to-do-when-your-samsung-galaxy-device-battery-drains-faster/",
+    "caption": "Device care settings example; menu names vary by version.",
+    "fit": "contain",
+    "instructionPattern": "\\b(?:device care|optimi[sz](?:e|ation))\\b"
+  },
+  {
+    "id": "unsplash-protect-cracked-screen",
+    "brand": "any",
+    "stepKind": "protect",
+    "instructionPattern": "\\b(?:avoid|do not|don't)\\b.{0,30}\\bpress(?:ing)?\\b.{0,40}\\b(?:crack(?:ed|s)?|damaged|broken)\\b",
+    "src": "/repair-reference/unsplash-cracked-screen.jpg",
+    "originalUrl": "https://images.unsplash.com/photo-1653589048352-7c3b90241ae2?auto=format&fit=max&w=1200&q=85",
+    "alt": "Close-up of cracked smartphone glass resting on a surface",
+    "source": "GegenWind Photo / Unsplash",
+    "sourceUrl": "https://unsplash.com/photos/a-close-up-of-a-cell-phone-on-a-white-surface-Zxet9ky421I",
+    "caption": "Cracked-glass example: avoid pressing on the damaged area.",
+    "fit": "cover",
+    "license": "Unsplash License",
+    "licenseUrl": "https://unsplash.com/license"
+  },
+  {
+    "id": "unsplash-professional-inspection",
+    "brand": "any",
+    "stepKind": "service",
+    "instructionPattern": "\\b(?:qualified|repairer|technician|professional|inspection)\\b",
+    "src": "/repair-reference/unsplash-technician-inspection.jpg",
+    "originalUrl": "https://images.unsplash.com/photo-1735875530804-d661ca2001da?auto=format&fit=max&w=1200&q=85",
+    "alt": "A technician examining an opened smartphone under a magnifying lamp at a repair bench",
+    "source": "Yoga Sukma / Unsplash",
+    "sourceUrl": "https://unsplash.com/photos/a-person-using-a-mouse-on-a-mouse-pad-J_tkqH61vHA",
+    "caption": "Professional phone inspection. Internal repair work belongs with a qualified repairer.",
+    "fit": "cover",
+    "license": "Unsplash License",
+    "licenseUrl": "https://unsplash.com/license"
+  },
+  {
+    "id": "apple-port-inspection",
+    "brand": "Apple",
+    "models": [
+      "iPhone 13",
+      "iPhone 13 Pro"
+    ],
+    "stepKind": "port",
+    "instructionPattern": "\\b(?:look|inspect|lint|debris)\\b.{0,60}\\bport\\b|\\bport\\b.{0,60}\\b(?:look|inspect|lint|debris)\\b",
+    "src": "/repair-reference/apple-port.png",
+    "originalUrl": "https://cdsassets.apple.com/live/7WUAS350/images/iphone/iphone13-port-view.png",
+    "alt": "Apple Support close-up of the charging port on an iPhone 13",
+    "source": "Apple Support",
+    "sourceUrl": "https://support.apple.com/en-me/108805",
+    "caption": "Charging port location for an iPhone 13. Inspect only as described in the step.",
+    "fit": "contain"
+  }
+]
